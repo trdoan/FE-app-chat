@@ -1,9 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { GoogleLogin } from "react-google-login";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MainForm from "./components/MainForm";
+import "./HomePage.css";
 function HomePage() {
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState({});
@@ -33,11 +34,15 @@ function HomePage() {
         <Box sx={{ mx: "auto", width: 200 }}>
           <GoogleLogin
             clientId="710407096844-19ar3a8e3vrlj4vfa2enj6tfs43f3r6v.apps.googleusercontent.com"
-            buttonText="Đăng nhập với Google"
+            render={(renderProps) => (
+              <Button variant="contained" onClick={renderProps.onClick}>
+                LOGIN WITH GOOGLE
+              </Button>
+            )}
+            buttonText="Login"
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             cookiePolicy={"single_host_origin"}
-            style={{ margin: "auto" }}
           />
         </Box>
       )}
@@ -54,7 +59,7 @@ function HomePage() {
         pauseOnHover
       />
 
-      {login && <MainForm user={user} />}
+      {login && <MainForm user={user} login={login} />}
     </div>
   );
 }
