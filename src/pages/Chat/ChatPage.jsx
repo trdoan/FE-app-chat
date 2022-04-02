@@ -1,18 +1,33 @@
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { Button } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
-import "./ChatPage.css";
-import { io } from "socket.io-client";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useParams } from "react-router-dom";
-
+import { io } from "socket.io-client";
+import "./ChatPage.css";
 function ChatPage() {
-  const { username, room } = useParams();
-  const [users, setUsers] = useState([]);
+  // const { room } = useParams();
+  // const username = useSelector((state) => state.user.google.name);
+
+  // const [users, setUsers] = useState([]);
   const [content, setContent] = useState([]);
+  const [clipboard, setClipboard] = useState({
+    value: "",
+    copied: false,
+  });
+  //
+  const username = "test";
+  const [users, setUsers] = useState([]);
+  const { room } = useParams();
   useEffect(() => {
-    const socket = io("http://localhost:5000", {
+    const socket = io("http://localhost:5001", {
       origin: "*",
     });
     console.log({ username, room });
+    setClipboard((preState) => ({ ...preState, value: room }));
     socket.emit("join-room", { username, room });
     socket.on("helloFirstTime", (data) => {
       setContent((preState) => [...preState, data]);
@@ -36,12 +51,37 @@ function ChatPage() {
       <section className="col-md-3 col-sm-4 app__left">
         <h1 className="text-center">
           <span className="app__title">Meet Clone</span>
+          <CopyToClipboard
+            text={clipboard.value}
+            onCopy={() => {
+              setClipboard((prevState) => ({
+                ...prevState,
+                copied: true,
+              }));
+            }}
+          >
+            <Button variant="contained" sx={{ display: "block", mx: "auto" }}>
+              COPY ID ROOM
+            </Button>
+          </CopyToClipboard>
         </h1>
         <div className="app__title--line" />
-        <div className="app__title--totat-user">
-          <h5 className="text-right">Số lượng: {users?.length}</h5>
-        </div>
+
+        <Box sx={{ ml: "auto", position: "relative", height: 30 }}>
+          <Badge
+            badgeContent={users.length}
+            color="primary"
+            sx={{ marginLeft: "auto", position: "absolute", right: 0 }}
+          >
+            <PersonOutlineIcon />
+          </Badge>
+        </Box>
+
         <div className="app__list-user">
+          <video
+            src=""
+            style={{ transform: "rotateY(180deg)", width: 200 }}
+          ></video>
           <ul className="app__list-user--content" id="user-list-by-room">
             {users?.map((user) => {
               return (
@@ -76,10 +116,18 @@ function ChatPage() {
             <form id="form-messages" className="form-messages">
               <div className="input-group h-100">
                 <div className="input-messages__wrapper">
-                  <input type="text" id="input-messages" className="input-messages" />
+                  <input
+                    type="text"
+                    id="input-messages"
+                    className="input-messages"
+                  />
                 </div>
+
                 <div className="input-group-append">
-                  <button className="btn btn-outline-secondary btn-send" type="submit">
+                  <button
+                    className="btn btn-outline-secondary btn-send"
+                    type="submit"
+                  >
                     Gửi
                   </button>
                   <button

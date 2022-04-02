@@ -10,7 +10,10 @@
 }
 .app__left {
   background-color: white;
-	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;}
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  height: 100%;
+  overflow: auto;
+}
 .app__title {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -42,26 +45,24 @@
   border-bottom-right-radius: 10px;
   border-top-left-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  border:1px black solid
+  border: 1px black solid;
 }
 
 .app__right {
 }
 .app__messages {
-  height: 90%;
+  height: 98%;
   position: relative;
-
 }
-.app__send-messages{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  /* transform:translate(0,100%) */
+.app__send-messages {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 /* render list message */
 
 .app__messages {
-  height: 95vh;
+  height: 99vh;
   overflow-y: scroll;
   padding: 30px 0px;
 }

@@ -1,30 +1,45 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
+import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { saveUserAction } from "../../store/actions/users.action";
 import MainForm from "./components/MainForm";
 import "./HomePage.css";
 function HomePage() {
   const [login, setLogin] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
+  const dispatch = useDispatch();
   const responseGoogle = (response) => {
     if (!response.error) {
       console.log(response);
       const { profileObj } = response;
       setUser(profileObj);
       setLogin(true);
-      toast.success(`Chào mừng ${profileObj.givenName} đã đăng nhập thành công`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.success(
+        `Chào mừng ${profileObj.givenName} đã đăng nhập thành công`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+      dispatch(saveUserAction(user));
+      setLogin(true);
+    }
+  }, [user]);
+
   return (
     <div>
       <Typography align="center" variant="h3" component="h2">
