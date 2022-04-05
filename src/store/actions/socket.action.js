@@ -1,9 +1,17 @@
-import { ANSWER_CALL } from "../constants/socket.constant";
+import { ANSWER_CALL, CALL_USER, LEAVE_CALL } from "../constants/socket.constant";
 
-const answerCall = () => {
+export const answerCall = () => {
   return {
     type: ANSWER_CALL,
   };
 };
-const callUser = () => {};
-const leaveCall = () => {};
+export const callUser = () => {
+  return {
+    type: CALL_USER,
+  };
+};
+export const leaveCall = () => {
+  return {
+    type: LEAVE_CALL,
+  };
+};

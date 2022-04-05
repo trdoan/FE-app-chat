@@ -1,36 +1,26 @@
-import { Box, Button, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Box, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { saveUserAction } from "../../store/actions/users.action";
+import Banner from "./components/Banner/Banner";
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
 import MainForm from "./components/MainForm";
+import TeamTest from "./components/TeamTest";
+import Pricing from "./components/Test";
 import "./HomePage.css";
+
+
+
+
 function HomePage() {
   const [login, setLogin] = useState(false);
   const [user, setUser] = useState();
   const dispatch = useDispatch();
-  const responseGoogle = (response) => {
-    if (!response.error) {
-      console.log(response);
-      const { profileObj } = response;
-      setUser(profileObj);
-      setLogin(true);
-      toast.success(
-        `Chào mừng ${profileObj.givenName} đã đăng nhập thành công`,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-    }
-  };
+
 
   useEffect(() => {
     if (user) {
@@ -42,26 +32,12 @@ function HomePage() {
 
   return (
     <div>
-      <Typography align="center" variant="h3" component="h2">
-        GOOGLE MEET CLONE APP
-      </Typography>
-      {!login && (
-        <Box sx={{ mx: "auto", width: 200 }}>
-          <GoogleLogin
-            clientId="710407096844-19ar3a8e3vrlj4vfa2enj6tfs43f3r6v.apps.googleusercontent.com"
-            render={(renderProps) => (
-              <Button variant="contained" onClick={renderProps.onClick}>
-                LOGIN WITH GOOGLE
-              </Button>
-            )}
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={"single_host_origin"}
-          />
-        </Box>
-      )}
+      <Header/>
+      <Banner/>
+      <Pricing/>
 
+      <TeamTest />
+      <Footer/>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -73,7 +49,6 @@ function HomePage() {
         draggable
         pauseOnHover
       />
-
       {login && <MainForm user={user} login={login} />}
     </div>
   );

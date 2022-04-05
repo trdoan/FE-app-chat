@@ -1,4 +1,4 @@
-import { Button, Container, FormControl, Input } from "@mui/material";
+import { Button, Container, FormControl } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
@@ -6,19 +6,20 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 function MainForm({ user, login }) {
   console.log(user);
+  const history = useNavigate();
+
   const [lobby, setLobby] = useState({
     username: user ? user.givenName : "",
     roomID: "",
   });
 
-  const history = useNavigate();
   const handleChange = (event) => {
     const value = event.target.value;
     const name = event.target.name;
-
     setLobby({ ...lobby, [name]: value });
     console.log(lobby);
   };
+
   const handleNewRoom = (event) => {
     event.preventDefault();
 

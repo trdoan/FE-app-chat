@@ -1,33 +1,54 @@
-*{
-	font-family: 'Roboto', sans-serif;
+* {
+	font-family: "Roboto", sans-serif;
+	outline: none !important;
 }
-.flex__container{
+/* width */
+::-webkit-scrollbar {
+	width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 18px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+.flex__container {
 	display: flex;
 }
-.flex-1{
-	flex:1
+.flex-1 {
+	flex: 1;
 }
-.flex-3{
-	flex:3
+.flex-3 {
+	flex: 3;
 }
-.flex__column{
+.flex__column {
 	display: flex;
 	flex-direction: column;
 }
-.img{
+.img {
 	width: 600px;
 	height: 380px;
 	position: relative;
 }
-img{
+img {
 	width: 100%;
 	height: 100%;
 }
-.infomation{
+.infomation {
 	position: absolute;
 	bottom: 0;
 	left: 0;
 	background: rgba(0, 0, 0, 0.5);
 	padding: 5px 15px;
-	color:white;
+	color: white;
 }
