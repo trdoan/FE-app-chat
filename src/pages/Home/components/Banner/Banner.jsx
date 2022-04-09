@@ -6,7 +6,7 @@ function Banner() {
     <Box sx={{ mt: 8 }}>
       <Grid container>
         <Grid item xs="12" sx={{ position: "relative" }}>
-          <img src="./banner.svg"></img>
+          <img src="./banner.svg" style={{ width: "100%" }} alt="banner"></img>
           <Typography
             variant="h6"
             color="initial"

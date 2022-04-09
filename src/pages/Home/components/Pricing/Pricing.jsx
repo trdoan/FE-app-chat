@@ -9,7 +9,6 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
-import Switch from "@mui/material/Switch";
 
 const useStyles = makeStyles((theme) => ({
   section: {
@@ -27,7 +26,8 @@ export default function Pricing(props) {
 
   const content = {
     "header-p2": "DỊCH VỤ",
-    description: "Hãy chọn dịch vụ phù hợp với nhu cầu của bạn để có dịch vụ tốt hơn",
+    description:
+      "Hãy chọn dịch vụ phù hợp với nhu cầu của bạn để có dịch vụ tốt hơn",
 
     "01_title": "Cá nhân",
     "01_price": "$9",
@@ -59,14 +59,6 @@ export default function Pricing(props) {
     ...props.content,
   };
 
-  const [state, setState] = React.useState({
-    checkbox: true,
-  });
-
-  const handleChange = (event) => {
-    setState({ ...state, checkbox: event.target.checked });
-  };
-
   return (
     <section className={classes.section}>
       <Container maxWidth="lg">
@@ -84,7 +76,11 @@ export default function Pricing(props) {
                   {content["header-p2"]}
                 </Typography>
               </Typography>
-              <Typography variant="subtitle1" color="textSecondary" paragraph={true}>
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                paragraph={true}
+              >
                 {content["description"]}
               </Typography>
             </Container>
@@ -92,22 +88,41 @@ export default function Pricing(props) {
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
               <Card variant="outlined">
-                <CardHeader title={content["01_title"]} className={classes.cardHeader}></CardHeader>
+                <CardHeader
+                  title={content["01_title"]}
+                  className={classes.cardHeader}
+                ></CardHeader>
                 <CardContent>
                   <Box px={1}>
                     <Typography variant="h3" component="h2" gutterBottom={true}>
                       {content["01_price"]}
-                      <Typography variant="h6" color="textSecondary" component="span">
+                      <Typography
+                        variant="h6"
+                        color="textSecondary"
+                        component="span"
+                      >
                         {content["01_suffix"]}
                       </Typography>
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["01_benefit1"]}
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["01_benefit2"]}
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["01_benefit3"]}
                     </Typography>
                     <Typography
@@ -119,7 +134,11 @@ export default function Pricing(props) {
                       {content["01_benefit4"]}
                     </Typography>
                   </Box>
-                  <Button variant="outlined" color="primary" className={classes.primaryAction}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    className={classes.primaryAction}
+                  >
                     {content["01_primary-action"]}
                   </Button>
                   <Box mt={2}>
@@ -132,22 +151,41 @@ export default function Pricing(props) {
             </Grid>
             <Grid item xs={12} md={4}>
               <Card variant="outlined">
-                <CardHeader title={content["02_title"]} className={classes.cardHeader}></CardHeader>
+                <CardHeader
+                  title={content["02_title"]}
+                  className={classes.cardHeader}
+                ></CardHeader>
                 <CardContent>
                   <Box px={1}>
                     <Typography variant="h3" component="h2" gutterBottom={true}>
                       {content["02_price"]}
-                      <Typography variant="h6" color="textSecondary" component="span">
+                      <Typography
+                        variant="h6"
+                        color="textSecondary"
+                        component="span"
+                      >
                         {content["02_suffix"]}
                       </Typography>
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["02_benefit1"]}
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["02_benefit2"]}
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["02_benefit3"]}
                     </Typography>
                     <Typography
@@ -172,22 +210,41 @@ export default function Pricing(props) {
             </Grid>
             <Grid item xs={12} md={4}>
               <Card variant="outlined">
-                <CardHeader title={content["03_title"]} className={classes.cardHeader}></CardHeader>
+                <CardHeader
+                  title={content["03_title"]}
+                  className={classes.cardHeader}
+                ></CardHeader>
                 <CardContent>
                   <Box px={1}>
                     <Typography variant="h3" component="h2" gutterBottom={true}>
                       {content["03_price"]}
-                      <Typography variant="h6" color="textSecondary" component="span">
+                      <Typography
+                        variant="h6"
+                        color="textSecondary"
+                        component="span"
+                      >
                         {content["03_suffix"]}
                       </Typography>
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["03_benefit1"]}
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["03_benefit2"]}
                     </Typography>
-                    <Typography color="textSecondary" variant="subtitle1" component="p">
+                    <Typography
+                      color="textSecondary"
+                      variant="subtitle1"
+                      component="p"
+                    >
                       {content["03_benefit3"]}
                     </Typography>
                     <Typography

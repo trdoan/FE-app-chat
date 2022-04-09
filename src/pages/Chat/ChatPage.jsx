@@ -1,9 +1,11 @@
 import ChatIcon from "@mui/icons-material/Chat";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import MuiAppBar from "@mui/material/AppBar";
+import Badge from "@mui/material/Badge";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -12,17 +14,18 @@ import List from "@mui/material/List";
 import { styled, useTheme } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-
-import { listUserTest } from "./user.js";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import "./ChatPage.css";
+import MenuMedia from "./components/MenuMedia/MenuMedia.jsx";
 import UserList from "./components/UserList";
-import Badge from "@mui/material/Badge";
+import { listUserTest } from "./user.js";
+
 const drawerWidth = 300;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -140,7 +143,14 @@ function ChatPage() {
     setValue(newValue);
   };
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        position: "relative",
+        height: "100vh",
+        backgroundColor: "#202124",
+      }}
+    >
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -153,9 +163,20 @@ function ChatPage() {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography variant="h6" noWrap component="div">
             {"ID: " + room}
           </Typography>
+          <CopyToClipboard
+            text={room}
+            onCopy={() =>
+              setClipboard((preState) => ({ ...preState, copied: true }))
+            }
+          >
+            <IconButton sx={{ mx: 1, color: "#fff" }}>
+              <ContentCopyIcon />
+            </IconButton>
+          </CopyToClipboard>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -173,7 +194,11 @@ function ChatPage() {
       >
         <DrawerHeader>
           <List>
-            <Tabs value={value} onChange={handleChange} aria-label="icon tabs example">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="icon tabs example"
+            >
               <Tab icon={<ChatIcon />} aria-label="chat" />
               <Tab
                 icon={
@@ -186,7 +211,11 @@ function ChatPage() {
             </Tabs>
           </List>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            {theme.direction === "ltr" ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
           </IconButton>
         </DrawerHeader>
         <Divider />
@@ -200,105 +229,8 @@ function ChatPage() {
       <Main open={open}>
         <DrawerHeader />
       </Main>
+      <MenuMedia />
     </Box>
-    // <main className="row app">
-    //   <section className="col-md-3 col-sm-4 app__left">
-    //     <h1 className="text-center">
-    //       <img
-    //         src="https://www.gstatic.com/meet/meet_logo_dark_2020q4_8955caafa87e403c96e24e8aa63f2433.svg"
-    //         alt="logo"
-    //         style={{ maxWidth: 200 }}
-    //       />
-    //       <CopyToClipboard
-    //         text={clipboard.value}
-    //         onCopy={() => {
-    //           setClipboard((prevState) => ({
-    //             ...prevState,
-    //             copied: true,
-    //           }));
-    //         }}
-    //       >
-    //         <Button variant="contained" sx={{ display: "block", mx: "auto" }}>
-    //           COPY ID ROOM
-    //         </Button>
-    //       </CopyToClipboard>
-    //     </h1>
-    //     <div className="app__title--line" />
-
-    //     <Box sx={{ ml: "auto", position: "relative", height: 30 }}>
-    //       <Badge
-    //         badgeContent={users.length || listUserTest.length}
-    //         showZero
-    //         color="primary"
-    //         sx={{
-    //           marginLeft: "auto",
-    //           position: "absolute",
-    //           right: 0,
-    //         }}
-    //       >
-    //         <PersonOutlineIcon />
-    //       </Badge>
-    //     </Box>
-
-    //     <div className="app__list-user">
-    //       <ul className="app__list-user--content" id="user-list-by-room">
-    //         {listUserTest.map((user) => {
-    //           return (
-    //             <li className="app__item-user d-flex align-items-center">
-    //               <Avatar
-    //                 className="mr-2"
-    //                 alt="Remy Sharp"
-    //                 src="https://seeklogo.com/images/V/viet-nam-logo-3D78D597F9-seeklogo.com.png"
-    //               />
-
-    //               <span>{user.username}</span>
-    //             </li>
-    //           );
-    //         })}
-    //       </ul>
-    //     </div>
-    //   </section>
-    //   <section className="col-md-9 col-sm-8 app__right">
-    //     <GridVideo data={listUserTest} />
-    //   </section>
-    //   {/* <section className="col-md-9 col-sm-8 app__right">
-    //     <div className="app__messages">
-    //       <div className="message-item">
-    //         <div className="message__row1">
-    //           <p className="message__name">Hệ thống</p>
-    //           <p className="message__date"></p>
-    //         </div>
-    //         <div className="message__row2">
-    //           {content?.map((item) => {
-    //             return <p className="message__content">{item}</p>;
-    //           })}
-    //         </div>
-    //       </div>
-    //       <div className="app__send-messages">
-    //         <form id="form-messages" className="form-messages">
-    //           <div className="input-group h-100">
-    //             <div className="input-messages__wrapper">
-    //               <input type="text" id="input-messages" className="input-messages" />
-    //             </div>
-
-    //             <div className="input-group-append">
-    //               <button className="btn btn-outline-secondary btn-send" type="submit">
-    //                 Gửi
-    //               </button>
-    //               <button
-    //                 className="btn btn-outline-secondary btn-location"
-    //                 id="btn-share-location"
-    //                 type="button"
-    //               >
-    //                 Gửi Vị Trí
-    //               </button>
-    //             </div>
-    //           </div>
-    //         </form>
-    //       </div>
-    //     </div>
-    //   </section> */}
-    // </main>
   );
 }
 

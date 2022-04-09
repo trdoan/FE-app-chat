@@ -23,15 +23,12 @@ export default function TeamTest(props) {
     "01_image": "/tan.jpg",
     "01_name": "Công Tân",
     "01_job": "Designer",
-
     "02_image": "/doan.png",
     "02_name": "Dương Doãn",
     "02_job": "Developer",
-
     "03_image": "/loc.png",
     "03_name": "Phú Lộc",
     "03_job": "CEO",
-
     ...props.content,
   };
 
@@ -41,7 +38,11 @@ export default function TeamTest(props) {
         <Box pt={8} pb={12} textAlign="center">
           <Box mb={9}>
             <Container maxWidth="sm">
-              <Typography variant="overline" color="textSecondary" paragraph={true}>
+              <Typography
+                variant="overline"
+                color="textSecondary"
+                paragraph={true}
+              >
                 {content["badge"]}
               </Typography>
               <Typography variant="h3" component="h2" gutterBottom={true}>
@@ -52,36 +53,64 @@ export default function TeamTest(props) {
                   {content["header-p2"]}
                 </Typography>
               </Typography>
-              <Typography variant="subtitle1" color="textSecondary" paragraph={true}>
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                paragraph={true}
+              >
                 {content["description"]}
               </Typography>
             </Container>
           </Box>
           <Grid container spacing={6}>
             <Grid item xs={12} sm={4} md={4}>
-              <Avatar alt="" src={content["01_image"]} className={classes.avatar} />
+              <Avatar
+                alt=""
+                src={content["01_image"]}
+                className={classes.avatar}
+              />
               <Typography variant="h6" component="h6" gutterBottom={true}>
                 {content["01_name"]}
               </Typography>
-              <Typography variant="body1" color="textSecondary" component="span">
+              <Typography
+                variant="body1"
+                color="textSecondary"
+                component="span"
+              >
                 {content["01_job"]}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4} md={4}>
-              <Avatar alt="" src={content["02_image"]} className={classes.avatar} />
+              <Avatar
+                alt=""
+                src={content["02_image"]}
+                className={classes.avatar}
+              />
               <Typography variant="h6" component="h6" gutterBottom={true}>
                 {content["02_name"]}
               </Typography>
-              <Typography variant="body1" color="textSecondary" component="span">
+              <Typography
+                variant="body1"
+                color="textSecondary"
+                component="span"
+              >
                 {content["02_job"]}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={4} md={4}>
-              <Avatar alt="" src={content["03_image"]} className={classes.avatar} />
+              <Avatar
+                alt=""
+                src={content["03_image"]}
+                className={classes.avatar}
+              />
               <Typography variant="h6" component="h6" gutterBottom={true}>
                 {content["03_name"]}
               </Typography>
-              <Typography variant="body1" color="textSecondary" component="span">
+              <Typography
+                variant="body1"
+                color="textSecondary"
+                component="span"
+              >
                 {content["03_job"]}
               </Typography>
             </Grid>
