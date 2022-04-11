@@ -1,11 +1,22 @@
 import { Box, Grid, Typography, Button } from "@mui/material";
 import React from "react";
-
-function Banner() {
+import { useNavigate } from "react-router-dom";
+import { swalError } from "../../../../components/Alert/Alert";
+// import { MySwal } from "./../../../../components/Alert/Alert";
+function Banner({ isLogin }) {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    console.log("handleClick is running");
+    if (isLogin) {
+      //  navigate("/chat")
+    } else {
+      swalError();
+    }
+  };
   return (
     <Box sx={{ mt: 8 }}>
       <Grid container>
-        <Grid item xs="12" sx={{ position: "relative" }}>
+        <Grid item xs={12} sx={{ position: "relative" }}>
           <img src="./banner.svg" style={{ width: "100%" }} alt="banner"></img>
           <Typography
             variant="h6"
@@ -37,6 +48,7 @@ function Banner() {
                 opacity: 0.9,
               },
             }}
+            onClick={() => handleClick()}
           >
             Dùng thử miễn phí
           </Button>

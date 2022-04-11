@@ -6,7 +6,7 @@ function InputField(props) {
   const { form, name, label, disable, type } = props;
   const { errors, formState } = form;
   const hasError = formState.touched[name] && errors[name];
-  console.log(errors[name], formState.touched[name]);
+  // console.log(errors[name], formState.touched[name]);
   return (
     <Controller
       name={name}
@@ -18,7 +18,7 @@ function InputField(props) {
       disable={disable}
       margin="normal"
       autoComplete="off"
-      error={hasError || errors[name]}
+      error={!!hasError || !!errors[name]}
       helperText={errors[name]?.message}
       sx={{
         "& label.Mui-focused": {

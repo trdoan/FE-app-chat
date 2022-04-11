@@ -5,9 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 function MainForm({ user, login }) {
-  console.log(user);
   const history = useNavigate();
-
   const [lobby, setLobby] = useState({
     username: user ? user.givenName : "",
     roomID: "",
@@ -17,7 +15,7 @@ function MainForm({ user, login }) {
     const value = event.target.value;
     const name = event.target.name;
     setLobby({ ...lobby, [name]: value });
-    console.log(lobby);
+    console.log("lobby", lobby);
   };
 
   const handleNewRoom = (event) => {

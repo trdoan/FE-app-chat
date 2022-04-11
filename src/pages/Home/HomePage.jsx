@@ -1,8 +1,12 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { userService } from "../../services/user/user.service";
+import { userLoginAction } from "../../store/actions/auth.action";
 import { saveUserAction } from "../../store/actions/users.action";
+import { USER_LOGIN } from "../../store/constants/auth.constant";
 import Banner from "./components/Banner/Banner";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
@@ -12,22 +16,22 @@ import TeamTest from "./components/TeamTest";
 import "./HomePage.css";
 
 function HomePage() {
-  const [login, setLogin] = useState(false);
   const [user, setUser] = useState();
+  const isLogin = useSelector((state) => state.auth.isLogin);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-      dispatch(saveUserAction(user));
-      setLogin(true);
-    }
-  }, [dispatch, user]);
+    dispatch(
+      userLoginAction({
+        email: "ab@gmail.com",
+        password: "123",
+      })
+    );
+  }, [dispatch]);
 
   return (
     <div>
-      <Header />
-      <Banner />
+      <Header isLogin={isLogin} />
+      <Banner isLogin={isLogin} />
       <Pricing />
 
       <TeamTest />
@@ -43,7 +47,7 @@ function HomePage() {
         draggable
         pauseOnHover
       />
-      {login && <MainForm user={user} login={login} />}
+      {isLogin && <MainForm user={user} isLogin={isLogin} />}
     </div>
   );
 }

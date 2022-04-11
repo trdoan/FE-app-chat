@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
+
 import LoginPage from "./pages/Auth/LoginPage";
 import ChatPage from "./pages/Chat/ChatPage";
 import HomePage from "./pages/Home/HomePage";

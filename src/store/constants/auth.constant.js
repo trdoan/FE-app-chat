@@ -1,0 +1,2 @@
+export const USER_LOGIN = "USER_LOGIN";
+export const USER_FORGOT_PASSWORD = "USER_FORGOT_PASSWORD";

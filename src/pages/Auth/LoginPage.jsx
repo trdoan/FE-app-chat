@@ -5,33 +5,22 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import axios from "axios";
+import { useEffect } from "react";
+
 import { toast } from "react-toastify";
 import FormLogin from "./components/FormLogin/FormLogin";
 import "./LoginPage.scss";
 
 export default function LoginPage() {
-  const responseGoogle = (response) => {
-    if (!response.error) {
-      console.log(response);
-      const { profileObj } = response;
-
-      toast.success(
-        `Chào mừng ${profileObj.givenName} đã đăng nhập thành công`,
-        {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-    }
-  };
-  const handleFormSubmit = (data) => {
+  console.log("RENDER LOGIN PAGE");
+  const handleFormSubmit = async (data) => {
     console.log(data);
+    await axios({
+      url: "https://api-meet-cdtt.herokuapp.com/user/signin",
+      method: "POST",
+      data,
+    }).then((data) => console.log(data));
     toast.success("Đăng nhập thành công", {
       position: "bottom-left",
       autoClose: 3000,
@@ -42,13 +31,12 @@ export default function LoginPage() {
       progress: undefined,
     });
   };
-
+  useEffect(() => {}, []);
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
       <CssBaseline />
       <Grid
         item
-        xs={false}
         sm={4}
         md={7}
         sx={{
