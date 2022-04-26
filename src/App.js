@@ -5,6 +5,7 @@ import "./App.css";
 import LoginPage from "./pages/Auth/LoginPage";
 import ChatPage from "./pages/Chat/ChatPage";
 import HomePage from "./pages/Home/HomePage";
+import LobbyPage from "./pages/Lobby/LobbyPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/lobby" element={<LobbyPage />} />
 
         <Route path="/room/:room" element={<ChatPage />} />
       </Routes>

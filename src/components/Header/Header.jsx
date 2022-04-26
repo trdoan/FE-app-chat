@@ -9,20 +9,15 @@ import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import { useEffect } from "react";
-export default function Header({ isLogin }) {
+import { useSelector } from "react-redux";
+export default function Header() {
   let user = JSON.parse(localStorage.getItem("user"));
-
+  const isLogin = useSelector((state) => state.auth.isLogin);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
+          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <VideoCameraBackIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -41,11 +36,7 @@ export default function Header({ isLogin }) {
               </Link>
             </Button>
           )}
-          {isLogin && (
-            <Avatar>
-              <Typography>{"Hi" + user.name[0]}</Typography>
-            </Avatar>
-          )}
+          {isLogin && <Typography>{`Hi ${user.userName}`}</Typography>}
         </Toolbar>
       </AppBar>
     </Box>

@@ -1,10 +1,34 @@
-import { userService } from "../../services/user/user.service";
-import { USER_LOGIN } from "../constants/auth.constant";
+import { toast } from "react-toastify";
+import { authService } from "../../services/auth/auth.service";
+import { ERROR_RESPONSE, LOGIN, SIGN_UP } from "../constants/auth.constant";
 
-export const userLoginAction = (userInfo) => {
+export const loginAction = (userInfo) => {
   return async (dispatch) => {
-    const data = await userService.login(userInfo);
+    try {
+      const data = await authService.signIn(userInfo);
+      dispatch({ type: LOGIN, payload: data });
+      toast.success("Đăng nhập thành công", {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      dispatch({ type: ERROR_RESPONSE, payload: error });
+    }
+  };
+};
 
-    dispatch({ type: USER_LOGIN, payload: data });
+export const signUpAction = (userInfo) => {
+  return async (dispatch) => {
+    try {
+      const data = await authService.signUp(userInfo);
+      dispatch({ type: "SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({ type: ERROR_RESPONSE, payload: error });
+    }
   };
 };

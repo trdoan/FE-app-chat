@@ -1,25 +1,20 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import CloseIcon from "@mui/icons-material/Close";
+import { LoadingButton } from "@mui/lab";
+import { Alert, IconButton, Modal } from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import InputField from "../../../../components/InputField";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import { IconButton, Modal, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import InputField from "../../../../components/InputField";
 import FormSignUp from "../FormSignUp/FormSignUp";
 const schema = yup
   .object()
   .shape({
-    email: yup
-      .string()
-      .required("(*) Vui lòng nhập email")
-      .email("Email không đúng định dạng"),
+    email: yup.string().required("(*) Vui lòng nhập email").email("Email không đúng định dạng"),
     password: yup.string().required("(*) Vui lòng nhập mật khẩu"),
   })
   .required();
@@ -36,7 +31,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-function FormLogin({ handleFormSubmit }) {
+function FormLogin({ handleLogin, disable }) {
   const form = useForm({
     defaultValues: {
       email: "",
@@ -44,26 +39,15 @@ function FormLogin({ handleFormSubmit }) {
     },
     resolver: yupResolver(schema),
   });
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+  const isFetch = useSelector((state) => state.common.isFetch);
+  const error = useSelector((state) => state.auth.error);
   const { handleSubmit } = form;
+
   return (
     <>
-      <Box
-        component="form"
-        noValidate
-        onSubmit={handleSubmit(handleFormSubmit)}
-        sx={{ mt: 1 }}
-      >
+      <Box component="form" noValidate onSubmit={handleSubmit(handleLogin)} sx={{ mt: 1 }}>
         <InputField form={form} name="email" label="Email" />
-        <InputField
-          form={form}
-          name="password"
-          label="Mật khẩu"
-          type="password"
-        />
+        <InputField form={form} name="password" label="Mật khẩu" type="password" />
         <FormControlLabel
           control={
             <Checkbox
@@ -78,8 +62,8 @@ function FormLogin({ handleFormSubmit }) {
           }
           label="Duy trì đăng nhập"
         />
-
-        <Button
+        {error && <Alert severity="error">{error.message}</Alert>}
+        <LoadingButton
           type="submit"
           fullWidth
           variant="contained"
@@ -89,71 +73,10 @@ function FormLogin({ handleFormSubmit }) {
             bgcolor: "primary.main",
             ":hover": { bgcolor: "primary.main" },
           }}
+          loading={isFetch}
         >
           ĐĂNG NHẬP
-        </Button>
-
-        <Grid container>
-          <Grid item>
-            <Button
-              variant="body2"
-              sx={{
-                color: "primary.main",
-                textDecoration: "none",
-                "&:hover": {
-                  color: "primary.main",
-                  textDecoration: "none",
-                },
-              }}
-              onClick={() => {
-                toast.success("Đã gửi mật khẩu qua email", {
-                  position: "bottom-left",
-                  autoClose: 3000,
-                  hideProgressBar: true,
-                  closeOnClick: true,
-                  pauseOnHover: false,
-                  draggable: false,
-                  progress: undefined,
-                });
-              }}
-            >
-              Quên mật khẩu?
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              href="#"
-              variant="body2"
-              sx={{
-                color: "primary.main",
-                textDecoration: "none",
-                "&:hover": {
-                  color: "primary.main",
-                  textDecoration: "none",
-                },
-              }}
-              onClick={handleOpen}
-            >
-              {"ĐĂNG KÝ NGAY"}
-            </Button>
-          </Grid>
-        </Grid>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <FormSignUp />
-            <IconButton
-              sx={{ position: "absolute", top: 0, right: 0 }}
-              onClick={handleClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </Modal>
+        </LoadingButton>
       </Box>
     </>
   );

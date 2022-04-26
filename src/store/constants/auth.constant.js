@@ -1,2 +1,4 @@
-export const USER_LOGIN = "USER_LOGIN";
-export const USER_FORGOT_PASSWORD = "USER_FORGOT_PASSWORD";
+export const LOGIN = "LOGIN";
+export const SIGN_UP = "SIGN_UP";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const ERROR_RESPONSE = "ERROR_RESPONSE";

@@ -1,4 +1,3 @@
-import ChatIcon from "@mui/icons-material/Chat";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -19,19 +18,19 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { io } from "socket.io-client";
 import "./ChatPage.css";
-import MenuMedia from "./components/MenuMedia/MenuMedia.jsx";
+import ChatForm from "./components/ChatForm/ChatForm";
+import MessageBox from "./components/MessageBox/MessageBox";
 import UserList from "./components/UserList";
-import { listUserTest } from "./user.js";
 
 const drawerWidth = 300;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -99,13 +98,13 @@ function ChatPage() {
     copied: false,
   });
   //
-  const username = "test";
+  const username = JSON.parse(localStorage.getItem("user")).userName;
+  console.log({ username });
   const [users, setUsers] = useState([]);
   const { room } = useParams();
+
+  const socket = useSelector((state) => state.socket.socket);
   useEffect(() => {
-    const socket = io("http://localhost:5001", {
-      origin: "*",
-    });
     console.log({ username, room });
     setClipboard((preState) => ({ ...preState, value: room }));
     socket.emit("join-room", { username, room });
@@ -118,6 +117,10 @@ function ChatPage() {
     socket.on("get-user-list-by-room", (data) => {
       setUsers(data);
     });
+    socket.on("send-client-others", (data) => {
+      console.log(data);
+      setContent((preState) => [...preState, data]);
+    });
     socket.on("one-user-out", ({ data, message }) => {
       setContent((preState) => [...preState, message]);
       setUsers(data);
@@ -128,7 +131,7 @@ function ChatPage() {
   }, []);
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -142,95 +145,91 @@ function ChatPage() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const handleSendMessage = (e, data) => {
+    e.preventDefault();
+    socket.emit("send-message", data);
+  };
   return (
-    <Box
-      sx={{
-        display: "flex",
-        position: "relative",
-        height: "100vh",
-        backgroundColor: "#202124",
-      }}
-    >
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Typography variant="h6" noWrap component="div">
-            {"ID: " + room}
-          </Typography>
-          <CopyToClipboard
-            text={room}
-            onCopy={() =>
-              setClipboard((preState) => ({ ...preState, copied: true }))
-            }
-          >
-            <IconButton sx={{ mx: 1, color: "#fff" }}>
-              <ContentCopyIcon />
-            </IconButton>
-          </CopyToClipboard>
-        </Toolbar>
-      </AppBar>
-      <Drawer
+    <>
+      <Box
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
+          display: "flex",
+          position: "relative",
+          height: "100vh",
+          backgroundColor: "#fff",
         }}
-        variant="persistent"
-        anchor="left"
-        open={open}
       >
-        <DrawerHeader>
-          <List>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="icon tabs example"
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: "none" }) }}
             >
-              <Tab icon={<ChatIcon />} aria-label="chat" />
-              <Tab
-                icon={
-                  <Badge badgeContent={listUserTest.length} color="error">
-                    <PersonPinIcon />
-                  </Badge>
-                }
-                aria-label="person"
-              />
-            </Tabs>
-          </List>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <TabPanel value={value} index={0}>
-          Item One
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <UserList userList={listUserTest} />
-        </TabPanel>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-      </Main>
-      <MenuMedia />
-    </Box>
+              <MenuIcon />
+            </IconButton>
+
+            <Typography variant="h6" noWrap component="div">
+              {"ID: " + room}
+            </Typography>
+            <CopyToClipboard
+              text={room}
+              onCopy={() => setClipboard((preState) => ({ ...preState, copied: true }))}
+            >
+              <IconButton sx={{ mx: 1, color: "#fff" }}>
+                <ContentCopyIcon />
+              </IconButton>
+            </CopyToClipboard>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+            height: "100%",
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <List>
+              <Tabs value={value} onChange={handleChange} aria-label="icon tabs example">
+                <Tab
+                  icon={
+                    <Badge badgeContent={users.length} color="error">
+                      <PersonPinIcon />
+                    </Badge>
+                  }
+                  aria-label="person"
+                />
+              </Tabs>
+            </List>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+
+          <TabPanel value={value} index={0}>
+            <UserList userList={users} />
+          </TabPanel>
+        </Drawer>
+        <Main open={open}>
+          <DrawerHeader />
+          <MessageBox content={content} />
+
+          <ChatForm handleSendMessage={handleSendMessage} username={username} />
+        </Main>
+      </Box>
+    </>
   );
 }
 

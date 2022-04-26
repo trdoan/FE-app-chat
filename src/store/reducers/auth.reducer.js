@@ -1,6 +1,6 @@
-import { USER_LOGIN } from "../constants/auth.constant";
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
+import { ERROR_RESPONSE, LOGIN } from "../constants/auth.constant";
 
 const initialState = {
   isLogin: false,
@@ -8,12 +8,22 @@ const initialState = {
 
 export const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case USER_LOGIN:
-      const decode = jwt_decode(payload.token);
-      console.log({ decode });
-      localStorage.setItem("user", JSON.stringify(decode));
-      localStorage.setItem("token", payload.token);
-      return { ...state, isLogin: true, token: payload.token };
+    case LOGIN:
+      console.log({ payload });
+      try {
+        const user = jwt_decode(payload.token);
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", payload.token);
+        return { isLogin: true, token: payload.token };
+      } catch (error) {
+        return state;
+      }
+    case ERROR_RESPONSE:
+      return { error: payload };
+    case "OPEN_MODAL":
+      return {};
+    case "SUCCESS":
+      return { success: payload };
     default:
       return state;
   }
