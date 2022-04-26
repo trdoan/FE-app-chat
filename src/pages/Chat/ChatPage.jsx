@@ -225,7 +225,6 @@ function ChatPage() {
         <Main open={open}>
           <DrawerHeader />
           <MessageBox content={content} />
-
           <ChatForm handleSendMessage={handleSendMessage} username={username} />
         </Main>
       </Box>

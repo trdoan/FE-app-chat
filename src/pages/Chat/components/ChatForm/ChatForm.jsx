@@ -23,13 +23,18 @@ function ChatForm({ handleSendMessage, username }) {
   };
 
   const handleForm = (e) => {
+    console.log(e);
     handleSendMessage(e, message);
     setMessage((t) => ({ ...t, message: "" }));
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
-    <Box component="form" onSubmit={(e) => handleForm(e)} sx={{ position: "relative" }}>
+    <Box
+      component="form"
+      onSubmit={(e) => handleForm(e)}
+      sx={{ position: "relative" }}
+    >
       <Box sx={{ display: "flex" }}>
         <TextField
           variant="outlined"
@@ -50,10 +55,10 @@ function ChatForm({ handleSendMessage, username }) {
           <Picker onEmojiClick={onEmojiClick} />
         </Popover>
 
-        <Button onClick={handleClick}>
+        <Button onClick={handleClick} >
           <EmojiEmotionsIcon />
         </Button>
-        <Button type="submit">
+        <Button type="submit" disabled={message.message == ""}>
           <Send />
         </Button>
       </Box>
