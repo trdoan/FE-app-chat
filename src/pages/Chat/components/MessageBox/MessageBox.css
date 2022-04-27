@@ -1,6 +1,29 @@
 .nofiSystem {
     color: blue;
 }
-.messUser {
-    border: 1px solid #000;
+.yourMess {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.yourMess .directionMess {
+    border: 1px solid transparent;
+    background-color: rgb(26, 80, 219);
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    list-style: none;
+    margin-bottom: 20px;
+}
+.otherMess {
+    display: flex;
+    flex-direction: row;
+}
+.otherMess .directionMess {
+    border: 1px solid transparent;
+    background-color: rgb(178, 169, 169);
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    list-style: none;
+    margin-bottom: 20px;
 }

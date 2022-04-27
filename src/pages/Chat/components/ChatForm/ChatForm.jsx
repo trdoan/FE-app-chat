@@ -2,12 +2,11 @@ import { Send } from "@mui/icons-material";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { Box, Button, Popover, TextField } from "@mui/material";
 import Picker from "emoji-picker-react";
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 function ChatForm({ handleSendMessage, username }) {
   const [message, setMessage] = useState({ username, message: "" });
   const [chosenEmoji, setChosenEmoji] = useState(null);
-
   const onEmojiClick = (event, emojiObject) => {
     setMessage((s) => ({ ...s, message: s.message + emojiObject.emoji }));
     setChosenEmoji(emojiObject);
@@ -29,6 +28,7 @@ function ChatForm({ handleSendMessage, username }) {
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+  // 
   return (
     <Box
       component="form"
@@ -55,7 +55,7 @@ function ChatForm({ handleSendMessage, username }) {
           <Picker onEmojiClick={onEmojiClick} />
         </Popover>
 
-        <Button onClick={handleClick} >
+        <Button onClick={handleClick}>
           <EmojiEmotionsIcon />
         </Button>
         <Button type="submit" disabled={message.message == ""}>
