@@ -16,7 +16,7 @@ import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -43,7 +43,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       }),
       marginLeft: 0,
     }),
-  }),
+  })
 );
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -123,6 +123,7 @@ function ChatPage() {
     });
     socket.on("send-client-others", (data) => {
       console.log(data);
+
       setContent((preState) => [...preState, data]);
     });
     socket.on("one-user-out", ({ data, message }) => {
@@ -151,9 +152,10 @@ function ChatPage() {
   };
   const handleSendMessage = (e, data) => {
     e.preventDefault();
-    data.idOwn=idOwn;
+    data.idOwn = idOwn;
     socket.emit("send-message", data);
   };
+
   return (
     <>
       <Box
@@ -182,9 +184,7 @@ function ChatPage() {
             </Typography>
             <CopyToClipboard
               text={room}
-              onCopy={() =>
-                setClipboard((preState) => ({ ...preState, copied: true }))
-              }
+              onCopy={() => setClipboard((preState) => ({ ...preState, copied: true }))}
             >
               <IconButton sx={{ mx: 1, color: "#fff" }}>
                 <ContentCopyIcon />
@@ -208,11 +208,7 @@ function ChatPage() {
         >
           <DrawerHeader>
             <List>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="icon tabs example"
-              >
+              <Tabs value={value} onChange={handleChange} aria-label="icon tabs example">
                 <Tab
                   icon={
                     <Badge badgeContent={users.length} color="error">
@@ -224,11 +220,7 @@ function ChatPage() {
               </Tabs>
             </List>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
+              {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </IconButton>
           </DrawerHeader>
           <Divider />

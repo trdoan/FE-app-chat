@@ -1,5 +1,7 @@
 .nofiSystem {
     color: blue;
+    text-align: center;
+    font-style: italic;
 }
 .yourMess {
     display: flex;
