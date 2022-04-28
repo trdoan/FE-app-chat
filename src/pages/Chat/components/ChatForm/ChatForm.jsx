@@ -30,7 +30,11 @@ function ChatForm({ handleSendMessage, username }) {
   const id = open ? "simple-popover" : undefined;
   //
   return (
-    <Box component="form" onSubmit={(e) => handleForm(e)} sx={{ position: "relative" }}>
+    <Box
+      component="form"
+      onSubmit={(e) => handleForm(e)}
+      sx={{ position: "relative" }}
+    >
       <Box sx={{ display: "flex" }}>
         <TextField
           id="outlined-multiline-static"
@@ -62,7 +66,10 @@ function ChatForm({ handleSendMessage, username }) {
         <Button onClick={handleClick}>
           <EmojiEmotionsIcon />
         </Button>
-        <Button type="submit" disabled={message.message == ""}>
+        <Button
+          type="submit"
+          disabled={message.message == "" || message.message == "\n"}
+        >
           <Send />
         </Button>
       </Box>

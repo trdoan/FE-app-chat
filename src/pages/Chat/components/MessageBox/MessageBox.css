@@ -1,38 +1,41 @@
 .nofiSystem {
-    color: blue;
-    text-align: center;
-    font-style: italic;
+  color: blue;
+  text-align: center;
+  font-style: italic;
 }
 .yourMess {
-    display: flex;
-    flex-direction: row-reverse;
+  display: flex;
+  flex-direction: row-reverse;
 }
-.yourMess .directionMess {
-    border: 1px solid transparent;
-    background-color: rgb(26, 80, 219);
-    color: white;
-    border-radius: 15px;
-    padding: 10px;
-    list-style: none;
-    margin-bottom: 20px;
+.yourMess .directionMess, .otherMess .directionMess {
     max-width: 60%;
+}
+.yourMess .directionMess .contentMess {
+  border: 1px solid transparent;
+  background-color: rgb(26, 80, 219);
+  color: white;
+  border-radius: 15px;
+  padding: 10px;
+  list-style: none;
+  margin-bottom: 20px;
+  text-align: justify;
+  
 }
 .yourMess .directionMess .author {
-    display: block;
-    text-align: right;
+  display: block;
+  text-align: right;
 }
 .otherMess {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
-.otherMess .directionMess {
-    border: 1px solid transparent;
-    background-color: rgb(178, 169, 169);
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    list-style: none;
-    margin-bottom: 20px;
-    max-width: 60%;
-    text-align: justify;
+.otherMess .directionMess .contentMess {
+  border: 1px solid transparent;
+  background-color: rgb(178, 169, 169);
+  color: black;
+  border-radius: 15px;
+  padding: 10px;
+  list-style: none;
+  margin-bottom: 20px;
+  text-align: justify;
 }
