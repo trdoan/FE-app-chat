@@ -28,21 +28,25 @@ function ChatForm({ handleSendMessage, username }) {
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-  // 
+  //
   return (
-    <Box
-      component="form"
-      onSubmit={(e) => handleForm(e)}
-      sx={{ position: "relative" }}
-    >
+    <Box component="form" onSubmit={(e) => handleForm(e)} sx={{ position: "relative" }}>
       <Box sx={{ display: "flex" }}>
         <TextField
+          id="outlined-multiline-static"
           variant="outlined"
           label="Tin nhắn: "
+          multiline
+          rows={2}
           value={message.message}
           fullWidth
           onChange={(e) => {
             setMessage((s) => ({ ...s, message: e.target.value }));
+          }}
+          onKeyDown={(e) => {
+            if (e.keyCode === 13 && !e.shiftKey) {
+              handleForm(e);
+            }
           }}
         />
         <Popover

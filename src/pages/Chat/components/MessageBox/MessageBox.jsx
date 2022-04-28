@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./MessageBox.css";
 function MessageBox({ content, idOwn }) {
   useEffect(() => {
@@ -7,7 +7,7 @@ function MessageBox({ content, idOwn }) {
   return (
     <ul id="myBox" style={{ height: "80%", overflowY: "auto", overflowX: "hidden" }}>
       {content?.map((message, i) => {
-        return message.username == "Hệ thống" ? (
+        return message.username === "Hệ thống" ? (
           <li key={i} className="nofiSystem">
             <b>{message.username}</b>
             <div>{message.message}</div>
@@ -17,9 +17,13 @@ function MessageBox({ content, idOwn }) {
         ) : (
           <li key={i} className={idOwn === message.idOwn ? "yourMess" : "otherMess"}>
             <div className="empty"></div>
-            <div className="directionMess">
-              <b>{message.username}</b>
-              <div>{message.message}</div>
+            <div className="directionMess" style={{ position: "relative" }}>
+              <b className="author">{message.username}</b>
+              {message.message.split(/\n/).map((line) => (
+                <div key={line} style={{ textAlign: "justify" }}>
+                  {line}
+                </div>
+              ))}
             </div>
           </li>
         );
