@@ -14,7 +14,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import "./LoginPage.scss";
 import FormSignUp from "./components/FormSignUp/FormSignUp";
-import { fetchDataOffAction, fetchDataOnAction } from "../../store/actions/common.action";
+import {
+  fetchDataOffAction,
+  fetchDataOnAction,
+} from "../../store/actions/common.action";
 import { useNavigate } from "react-router-dom";
 const style = {
   position: "absolute",
@@ -49,7 +52,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    login && navigate("/lobby");
+    login && navigate("/profile");
   }, [login]);
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -63,7 +66,9 @@ export default function LoginPage() {
             "url(https://cdn.vietnambiz.vn/171464876016439296/2020/6/3/gettyimages-1215704164-1591179886209722498072.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
-            t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900],
+            t.palette.mode === "light"
+              ? t.palette.grey[50]
+              : t.palette.grey[900],
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -113,7 +118,10 @@ export default function LoginPage() {
       >
         <Box sx={style}>
           {content === "SIGN_UP_FORM" && <FormSignUp />}
-          <IconButton sx={{ position: "absolute", top: 0, right: 0 }} onClick={handleClose}>
+          <IconButton
+            sx={{ position: "absolute", top: 0, right: 0 }}
+            onClick={handleClose}
+          >
             <CloseIcon />
           </IconButton>
         </Box>

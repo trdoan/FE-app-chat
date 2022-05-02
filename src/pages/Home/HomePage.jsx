@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Banner from "./components/Banner/Banner";
@@ -9,10 +9,16 @@ import MainForm from "./components/MainForm";
 import Pricing from "./components/Pricing/Pricing";
 import TeamTest from "./components/TeamTest";
 import "./HomePage.css";
+import { checkTokenAction } from "../../store/actions/auth.action";
 
 function HomePage() {
   const [user, setUser] = useState();
+  const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    dispatch(checkTokenAction(token));
+  }, []);
 
   return (
     <div>
@@ -33,7 +39,6 @@ function HomePage() {
         draggable
         pauseOnHover
       />
-      {isLogin && <MainForm user={user} isLogin={isLogin} />}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from "uuid";
 function MainForm({ user, login }) {
   const history = useNavigate();
   const [lobby, setLobby] = useState({
-    username: user ? user.givenName : "",
+    displayName: user ? user.givenName : "",
     roomID: "",
   });
 
@@ -58,7 +58,7 @@ function MainForm({ user, login }) {
               variant="contained"
               fullWidth
               onClick={() => {
-                history(`/room/${lobby.roomID}`);
+                history(`/profile`);
               }}
             >
               JOIN ROOM

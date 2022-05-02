@@ -6,4 +6,11 @@ export const authService = {
   signUp(data) {
     return clientService.post("/auth/sign-up", data);
   },
+  checkToken(token) {
+    return clientService.post("/auth/checkToken", token, {
+      headers: {
+        token,
+      },
+    });
+  },
 };

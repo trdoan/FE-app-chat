@@ -3,7 +3,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 
 function InputField(props) {
-  const { form, name, label, disable, type } = props;
+  const { form, name, label, disabled, type, value } = props;
   const { errors, formState } = form;
   const hasError = formState.touched[name] && errors[name];
   return (
@@ -14,7 +14,8 @@ function InputField(props) {
       fullWidth
       type={type}
       label={label}
-      disable={disable}
+      value={value}
+      disabled={disabled}
       margin="normal"
       autoComplete="off"
       error={!!hasError || !!errors[name]}

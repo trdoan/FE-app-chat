@@ -3,40 +3,53 @@ import FaceIcon from "@mui/icons-material/Face";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Avatar, Box, Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import InputField from "../../../../components/InputField";
 import { signUpAction } from "../../../../store/actions/auth.action";
+import { updateUserAction } from "../../../../store/actions/users.action";
+import { ERROR_RESPONSE } from "../../../../store/constants/auth.constant";
 
 const schema = yup
   .object()
   .shape({
     displayName: yup.string().required("(*) Vui lòng nhập tên người dùng"),
-    email: yup
+    currentPassword: yup.string().required("(*) Vui lòng nhập mật khẩu cũ"),
+    newPassword: yup.string().required("(*) Vui lòng nhập mật khẩu mới"),
+    confirmPassword: yup
       .string()
-      .required("(*) Vui lòng nhập email")
-      .email("Email không đúng định dạng"),
-    password: yup.string().required("(*) Vui lòng nhập mật khẩu"),
+      .required("Password is mendatory")
+      .oneOf([yup.ref("newPassword")], "(*) Mật khẩu chưa giống"),
   })
   .required();
 
-function FormSignUp({ update }) {
+function UserUpdate({ update }) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const { displayName, email } = JSON.parse(localStorage.getItem("user"));
+
   const [disable, setDisable] = useState(false);
-  const handleSignUp = async (data) => {
+  const handleUpdateUser = async (data) => {
     setDisable(true);
-    await dispatch(signUpAction(data));
+    // await dispatch(signUpAction(data));
+    await dispatch(updateUserAction(data));
+
     setDisable(false);
   };
-
+  useEffect(() => {
+    return () => {
+      dispatch({ type: ERROR_RESPONSE, payload: null });
+    };
+  }, []);
   const form = useForm({
     defaultValues: {
-      email: "",
-      password: "",
-      displayName: "",
+      displayName,
+      email,
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     resolver: yupResolver(schema),
   });
@@ -45,7 +58,7 @@ function FormSignUp({ update }) {
     <Box
       component="form"
       noValidate
-      onSubmit={handleSubmit(handleSignUp)}
+      onSubmit={handleSubmit(handleUpdateUser)}
       sx={{ mt: 1 }}
     >
       <Box
@@ -59,16 +72,27 @@ function FormSignUp({ update }) {
           <FaceIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          ĐĂNG KÝ
+          HỒ SƠ
         </Typography>
       </Box>
-
       <InputField form={form} name="displayName" label="Tên người dùng" />
-      <InputField form={form} name="email" label="Email" />
+      <InputField form={form} name="email" label="Email" disabled={true} />
       <InputField
         form={form}
-        name="password"
-        label="Mật khẩu"
+        name="currentPassword"
+        label="Mật khẩu hiện tại"
+        type="password"
+      />
+      <InputField
+        form={form}
+        name="newPassword"
+        label="Mật khẩu mới"
+        type="password"
+      />
+      <InputField
+        form={form}
+        name="confirmPassword"
+        label="Xác nhận mật khẩu mới"
         type="password"
       />
       {auth.error?.status && (
@@ -89,10 +113,10 @@ function FormSignUp({ update }) {
         }}
         loading={disable}
       >
-        ĐĂNG KÝ
+        CẬP NHẬT
       </LoadingButton>
     </Box>
   );
 }
 
-export default FormSignUp;
+export default UserUpdate;

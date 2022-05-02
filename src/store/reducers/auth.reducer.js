@@ -1,6 +1,11 @@
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { ERROR_RESPONSE, LOGIN } from "../constants/auth.constant";
+import {
+  ERROR_RESPONSE,
+  LOGIN,
+  SET_LOGIN_FALSE,
+  SET_LOGIN_TRUE,
+} from "../constants/auth.constant";
 
 const initialState = {
   isLogin: false,
@@ -24,6 +29,10 @@ export const authReducer = (state = initialState, { type, payload }) => {
       return {};
     case "SUCCESS":
       return { success: payload };
+    case SET_LOGIN_TRUE:
+      return { ...state, isLogin: true };
+    case SET_LOGIN_FALSE:
+      return { ...state, isLogin: false };
     default:
       return state;
   }

@@ -100,19 +100,19 @@ function ChatPage() {
   });
   const [idOwn, setIdOwn] = useState();
   //
-  const username = JSON.parse(localStorage.getItem("user")).displayName;
-  console.log({ username });
+  const displayName = JSON.parse(localStorage.getItem("user")).displayName;
+  console.log({ displayName });
   const [users, setUsers] = useState([]);
   const { room } = useParams();
 
   const socket = useSelector((state) => state.socket.socket);
   useEffect(() => {
-    console.log({ username, room });
+    console.log({ displayName, room });
     socket.on("getID", (id) => {
       setIdOwn(id);
     });
     setClipboard((preState) => ({ ...preState, value: room }));
-    socket.emit("join-room", { username, room });
+    socket.emit("join-room", { displayName, room });
     socket.on("helloFirstTime", (data) => {
       setContent((preState) => [...preState, data]);
     });
@@ -185,7 +185,9 @@ function ChatPage() {
             </Typography>
             <CopyToClipboard
               text={room}
-              onCopy={() => setClipboard((preState) => ({ ...preState, copied: true }))}
+              onCopy={() =>
+                setClipboard((preState) => ({ ...preState, copied: true }))
+              }
             >
               <IconButton sx={{ mx: 1, color: "#fff" }}>
                 <ContentCopyIcon />
@@ -209,7 +211,11 @@ function ChatPage() {
         >
           <DrawerHeader>
             <List>
-              <Tabs value={value} onChange={handleChange} aria-label="icon tabs example">
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="icon tabs example"
+              >
                 <Tab
                   icon={
                     <Badge badgeContent={users.length} color="error">
@@ -221,7 +227,11 @@ function ChatPage() {
               </Tabs>
             </List>
             <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              {theme.direction === "ltr" ? (
+                <ChevronLeftIcon />
+              ) : (
+                <ChevronRightIcon />
+              )}
             </IconButton>
           </DrawerHeader>
           <Divider />
@@ -233,7 +243,10 @@ function ChatPage() {
         <Main open={open}>
           <DrawerHeader />
           <MessageBox content={content} idOwn={idOwn} />
-          <ChatForm handleSendMessage={handleSendMessage} username={username} />
+          <ChatForm
+            handleSendMessage={handleSendMessage}
+            displayName={displayName}
+          />
         </Main>
       </Box>
     </>

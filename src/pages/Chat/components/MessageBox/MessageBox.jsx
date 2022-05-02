@@ -13,13 +13,13 @@ function MessageBox({ content, idOwn }) {
       style={{ height: "80%", overflowY: "auto", overflowX: "hidden" }}
     >
       {content?.map((message, i) => {
-        return message.username === "Hệ thống" ? (
+        return message.displayName === "Hệ thống" ? (
           <li key={i} className="nofiSystem">
-            <b>{message.username}</b>
+            <b>{message.displayName}</b>
             <div>{message.message}</div>
           </li>
-        ) : message.username == null ||
-          (message.username != null &&
+        ) : message.displayName == null ||
+          (message.displayName != null &&
             (message.message == "" || message.message == "\n")) ? (
           ""
         ) : (
@@ -29,7 +29,7 @@ function MessageBox({ content, idOwn }) {
           >
             <div className="empty"></div>
             <div className="directionMess" style={{ position: "relative" }}>
-              <b className="author">{message.username}</b>
+              <b className="author">{message.displayName}</b>
               {message.message.split(/\n/).map((line, i) => (
                 <div key={i} className="contentMess">
                   {line}

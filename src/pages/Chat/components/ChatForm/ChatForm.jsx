@@ -4,8 +4,8 @@ import { Box, Button, Popover, TextField } from "@mui/material";
 import Picker from "emoji-picker-react";
 import React, { useEffect, useState, useRef } from "react";
 
-function ChatForm({ handleSendMessage, username }) {
-  const [message, setMessage] = useState({ username, message: "" });
+function ChatForm({ handleSendMessage, displayName }) {
+  const [message, setMessage] = useState({ displayName, message: "" });
   const [chosenEmoji, setChosenEmoji] = useState(null);
   const onEmojiClick = (event, emojiObject) => {
     setMessage((s) => ({ ...s, message: s.message + emojiObject.emoji }));

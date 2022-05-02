@@ -18,40 +18,44 @@ function Banner({ isLogin }) {
       <Grid container>
         <Grid item xs={12} sx={{ position: "relative" }}>
           <img src="./banner.svg" style={{ width: "100%" }} alt="banner"></img>
-          <Typography
-            variant="h6"
-            color="initial"
-            sx={{
+          <div
+            className=""
+            style={{
               position: "absolute",
               top: "50%",
               left: "50%",
               zIndex: 3,
-              color: "#fff",
-              transform: "translate(-50%, -500%)",
+              transform: "translate(-50%, -60%)",
+              textAlign: "center",
             }}
           >
-            Làm việc mọi lúc mọi nơi, gặp người mình thích. Yêu người mình yêu
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{
-              position: "absolute",
-              backgroundColor: "#fff",
-              color: "#4324a6",
-              zIndex: 9,
-              bottom: "50%",
-              right: "50%",
-              padding: "10px 30px",
-              transform: "translate(50%, -100%)",
-              ":hover": {
-                bgcolor: "#fff",
-                opacity: 0.9,
-              },
-            }}
-            onClick={() => handleClick()}
-          >
-            Dùng thử miễn phí
-          </Button>
+            <Typography
+              variant="h6"
+              color="initial"
+              sx={{
+                color: "#fff",
+              }}
+            >
+              Làm việc mọi lúc mọi nơi, gặp người mình thích. Yêu người mình yêu
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#fff",
+                color: "#4324a6",
+
+                padding: "10px 30px",
+                marginTop: "10px",
+                ":hover": {
+                  bgcolor: "#fff",
+                  opacity: 0.9,
+                },
+              }}
+              onClick={() => handleClick()}
+            >
+              Dùng thử miễn phí
+            </Button>
+          </div>
         </Grid>
       </Grid>
     </Box>

@@ -10,9 +10,12 @@ import Tab from "@mui/material/Tab";
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import { checkTokenAction } from "../../store/actions/auth.action";
 import { createRoom, findAllRoom } from "../../store/actions/room.action";
 import FormSignUp from "../Auth/components/FormSignUp/FormSignUp";
+import UserUpdate from "./components/FormUserUpdate/UserUpdate";
 import TableRoom from "./components/TableRoom/TableRoom";
 
 const data = [
@@ -55,15 +58,20 @@ function TabPanel(props) {
 }
 export default function ProfilePage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { socket } = useSelector((state) => state.socket);
   const { roomList } = useSelector((state) => state.room);
-  const [value, setValue] = useState("1");
+  const [value, setValue] = useState(0);
+  const token = localStorage.getItem("token");
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  isLogin === false && navigate("/");
   useEffect(() => {
+    dispatch(checkTokenAction(token));
     dispatch(findAllRoom());
     socket.on("send-rooms-to-client", () => {
       dispatch(findAllRoom());
     });
-  }, []);
+  }, [value, dispatch, socket, token]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -74,7 +82,12 @@ export default function ProfilePage() {
     return data?.map((item, index) => {
       temp = temp + 1;
       return (
-        <Tab {...a11yProps(temp)} icon={item.icon} label={item.content} iconPosition="start"></Tab>
+        <Tab
+          {...a11yProps(temp)}
+          icon={item.icon}
+          label={item.content}
+          iconPosition="start"
+        ></Tab>
       );
     });
   };
@@ -84,27 +97,27 @@ export default function ProfilePage() {
       <Box
         sx={{
           bgcolor: "background.paper",
+
           display: "flex",
-          height: "100vh",
+          justifyContent: "center",
         }}
       >
         <Tabs
-          orientation="vertical"
-          variant="scrollable"
+          // variant="scrollable"
           value={value}
           onChange={handleChange}
-          aria-label="Vertical tabs example"
-          sx={{ borderRight: 1, borderColor: "divider", width: "250px" }}
+          aria-label="basic tabs example"
+          sx={{ margin: "auto", width: "auto" }}
         >
           {renderItem()}
         </Tabs>
-        <TabPanel value={value} index={0}>
-          <FormSignUp />
-        </TabPanel>
-        <TabPanel value={value} index={1} sx={{ widh: "100%" }}>
-          <TableRoom roomList={roomList} socket={socket} />
-        </TabPanel>
       </Box>
+      <TabPanel value={value} index={0}>
+        <UserUpdate />
+      </TabPanel>
+      <TabPanel value={value} index={1} sx={{ widh: "100%" }}>
+        <TableRoom roomList={roomList} socket={socket} />
+      </TabPanel>
     </>
   );
 }

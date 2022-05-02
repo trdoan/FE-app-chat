@@ -1,6 +1,12 @@
 import { toast } from "react-toastify";
 import { authService } from "../../services/auth/auth.service";
-import { ERROR_RESPONSE, LOGIN, SIGN_UP } from "../constants/auth.constant";
+import {
+  ERROR_RESPONSE,
+  LOGIN,
+  SET_LOGIN_FALSE,
+  SET_LOGIN_TRUE,
+  SIGN_UP,
+} from "../constants/auth.constant";
 
 export const loginAction = (userInfo) => {
   return async (dispatch) => {
@@ -21,7 +27,16 @@ export const loginAction = (userInfo) => {
     }
   };
 };
-
+export const checkTokenAction = (token) => {
+  return async (dispatch) => {
+    try {
+      await authService.checkToken(token);
+      dispatch({ type: SET_LOGIN_TRUE });
+    } catch (error) {
+      dispatch({ type: SET_LOGIN_FALSE });
+    }
+  };
+};
 export const signUpAction = (userInfo) => {
   return async (dispatch) => {
     try {
