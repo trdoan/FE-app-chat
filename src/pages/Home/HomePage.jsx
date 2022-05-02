@@ -12,7 +12,6 @@ import "./HomePage.css";
 import { checkTokenAction } from "../../store/actions/auth.action";
 
 function HomePage() {
-  const [user, setUser] = useState();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
   const token = localStorage.getItem("token");

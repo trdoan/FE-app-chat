@@ -6,9 +6,8 @@ import { swalError } from "../../../../components/Alert/Alert";
 function Banner({ isLogin }) {
   const navigate = useNavigate();
   const handleClick = () => {
-    console.log("handleClick is running");
     if (isLogin) {
-      //  navigate("/chat")
+      navigate("/profile");
     } else {
       swalError();
     }

@@ -11,27 +11,31 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createRoom } from "../../../../store/actions/room.action";
+import { createRoom, deleteRoom } from "../../../../store/actions/room.action";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import PublicIcon from "@mui/icons-material/Public";
+import RoomForm from "../RoomForm/RoomForm";
 
 export default function TableRoom({ roomList, socket }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(roomList.length / 10);
-
   const createNewRoom = async (data) => {
+    console.log(data);
     await dispatch(createRoom(data));
     socket.emit("new-room-created", data);
   };
+  const user = JSON.parse(localStorage.getItem("user"));
   const handleJoinRoom = (id) => {
     navigate(`/room/${id}`);
   };
+  const handleDeleteRoom = (id) => {
+    dispatch(deleteRoom(id));
+  };
   return (
     <>
-      <Button
+      {/* <Button
         onClick={() =>
           createNewRoom({
             name: "Phòng mới",
@@ -40,7 +44,7 @@ export default function TableRoom({ roomList, socket }) {
         }
       >
         Tạo phòng mới
-      </Button>
+      </Button> */}
       <TableContainer component={Paper} sx={{ border: "5px" }}>
         <Table
           sx={{ minWidth: 650, width: "100%", margin: "auto" }}
@@ -58,7 +62,7 @@ export default function TableRoom({ roomList, socket }) {
           <TableBody>
             {roomList?.map((row, index) => (
               <TableRow
-                key={row.name}
+                key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
@@ -72,30 +76,50 @@ export default function TableRoom({ roomList, socket }) {
                   </IconButton>
                 </TableCell>
                 <TableCell align="right">
-                  <Stack
-                    spacing={2}
-                    direction="row"
-                    justifyContent="center"
-                    divider={<Divider orientation="vertical" flexItem />}
-                  >
-                    <Button
-                      variant="contained"
-                      startIcon={<ArrowForwardIcon />}
-                      onClick={() => handleJoinRoom(row.id)}
+                  {console.log(user.id, row.hostId)}
+                  {user?.id === row.hostId && (
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      justifyContent="center"
+                      divider={<Divider orientation="vertical" flexItem />}
                     >
-                      Tham gia
-                    </Button>
-                    <Button variant="outlined" startIcon={<EditIcon />}>
-                      Chỉnh sửa
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<DeleteIcon />}
-                      color="error"
+                      <Button
+                        variant="contained"
+                        startIcon={<ArrowForwardIcon />}
+                        onClick={() => handleJoinRoom(row.id)}
+                      >
+                        Tham gia
+                      </Button>
+                      <Button variant="outlined" startIcon={<EditIcon />}>
+                        Chỉnh sửa
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                        color="error"
+                        onClick={() => handleDeleteRoom(row.id)}
+                      >
+                        Xóa
+                      </Button>
+                    </Stack>
+                  )}
+                  {user?.id !== row.hostId && (
+                    <Stack
+                      spacing={2}
+                      direction="row"
+                      justifyContent="center"
+                      divider={<Divider orientation="vertical" flexItem />}
                     >
-                      Xóa
-                    </Button>
-                  </Stack>
+                      <Button
+                        variant="contained"
+                        startIcon={<ArrowForwardIcon />}
+                        onClick={() => handleJoinRoom(row.id)}
+                      >
+                        Tham gia
+                      </Button>
+                    </Stack>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
@@ -116,6 +140,7 @@ export default function TableRoom({ roomList, socket }) {
           </TableBody>
         </Table>
       </TableContainer>
+      <RoomForm createNewRoom={createNewRoom} />
     </>
   );
 }

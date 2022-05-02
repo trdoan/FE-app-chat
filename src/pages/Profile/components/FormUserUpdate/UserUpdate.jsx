@@ -25,10 +25,10 @@ const schema = yup
   })
   .required();
 
-function UserUpdate({ update }) {
+function UserUpdate() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const { displayName, email } = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [disable, setDisable] = useState(false);
   const handleUpdateUser = async (data) => {
@@ -45,8 +45,8 @@ function UserUpdate({ update }) {
   }, []);
   const form = useForm({
     defaultValues: {
-      displayName,
-      email,
+      displayName: user?.displayName,
+      email: user?.email,
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",

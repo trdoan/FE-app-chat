@@ -47,3 +47,10 @@ export const signUpAction = (userInfo) => {
     }
   };
 };
+
+export const logoutAction = () => {
+  return {
+    type: "LOGOUT",
+    payload: false,
+  };
+};

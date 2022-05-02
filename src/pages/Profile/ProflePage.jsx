@@ -59,12 +59,13 @@ function TabPanel(props) {
 export default function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  isLogin === false && navigate("/");
   const { socket } = useSelector((state) => state.socket);
   const { roomList } = useSelector((state) => state.room);
   const [value, setValue] = useState(0);
   const token = localStorage.getItem("token");
-  const isLogin = useSelector((state) => state.auth.isLogin);
-  isLogin === false && navigate("/");
+
   useEffect(() => {
     dispatch(checkTokenAction(token));
     dispatch(findAllRoom());
@@ -87,6 +88,7 @@ export default function ProfilePage() {
           icon={item.icon}
           label={item.content}
           iconPosition="start"
+          key={index}
         ></Tab>
       );
     });
@@ -108,6 +110,7 @@ export default function ProfilePage() {
           onChange={handleChange}
           aria-label="basic tabs example"
           sx={{ margin: "auto", width: "auto" }}
+          component="div"
         >
           {renderItem()}
         </Tabs>

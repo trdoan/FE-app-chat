@@ -17,3 +17,8 @@ export const createRoom = (data) => {
     const newRoom = await roomServices.create(data);
   };
 };
+export const deleteRoom = (id) => {
+  return async (dispatch) => {
+    await roomServices.delete(id);
+  };
+};
