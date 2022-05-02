@@ -13,7 +13,7 @@ import { signUpAction } from "../../../../store/actions/auth.action";
 const schema = yup
   .object()
   .shape({
-    userName: yup.string().required("(*) Vui lòng nhập tên người dùng"),
+    displayName: yup.string().required("(*) Vui lòng nhập tên người dùng"),
     email: yup.string().required("(*) Vui lòng nhập email").email("Email không đúng định dạng"),
     password: yup.string().required("(*) Vui lòng nhập mật khẩu"),
   })
@@ -33,7 +33,7 @@ function FormSignUp() {
     defaultValues: {
       email: "",
       password: "",
-      userName: "",
+      displayName: "",
     },
     resolver: yupResolver(schema),
   });
@@ -55,7 +55,7 @@ function FormSignUp() {
         </Typography>
       </Box>
 
-      <InputField form={form} name="userName" label="Tên người dùng" />
+      <InputField form={form} name="displayName" label="Tên người dùng" />
       <InputField form={form} name="email" label="Email" />
       <InputField form={form} name="password" label="Mật khẩu" type="password" />
       {auth.error?.status && <Alert severity="error">{auth.error?.message}</Alert>}
