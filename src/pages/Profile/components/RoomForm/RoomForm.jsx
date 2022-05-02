@@ -23,7 +23,11 @@ import { signUpAction } from "../../../../store/actions/auth.action";
 import { updateUserAction } from "../../../../store/actions/users.action";
 import { ERROR_RESPONSE } from "../../../../store/constants/auth.constant";
 import { styled } from "@mui/material/styles";
-import { createRoom, deleteRoom } from "../../../../store/actions/room.action";
+import {
+  createRoom,
+  deleteRoom,
+  findAllRoom,
+} from "../../../../store/actions/room.action";
 
 const schema = yup
   .object()
@@ -97,16 +101,21 @@ function RoomForm(createNewRoom) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
+  const { socket } = useSelector((state) => state.socket);
   const [disable, setDisable] = useState(false);
+
   const handleCreateRoom = async (data) => {
     setDisable(true);
     console.log(data);
     await dispatch(
-      createRoom({ name: data.name, token: localStorage.getItem("token") })
+      createRoom({
+        name: data.name,
+        type: checked ? "PRIVATE" : "PUBLIC",
+        password: checked && data.passwordRoom,
+      })
     );
-    // await dispatch(updateUserAction(data));
-
+    handleClose();
+    socket.emit("new-room-created", data);
     setDisable(false);
   };
   useEffect(() => {

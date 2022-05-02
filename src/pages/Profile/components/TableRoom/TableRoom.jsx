@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import PublicIcon from "@mui/icons-material/Public";
 import RoomForm from "../RoomForm/RoomForm";
-
+import LockIcon from "@mui/icons-material/Lock";
 export default function TableRoom({ roomList, socket }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,19 +32,10 @@ export default function TableRoom({ roomList, socket }) {
   };
   const handleDeleteRoom = (id) => {
     dispatch(deleteRoom(id));
+    socket.emit("new-room-deleted");
   };
   return (
     <>
-      {/* <Button
-        onClick={() =>
-          createNewRoom({
-            name: "Phòng mới",
-            token: localStorage.getItem("token"),
-          })
-        }
-      >
-        Tạo phòng mới
-      </Button> */}
       <TableContainer component={Paper} sx={{ border: "5px" }}>
         <Table
           sx={{ minWidth: 650, width: "100%", margin: "auto" }}
@@ -71,12 +62,18 @@ export default function TableRoom({ roomList, socket }) {
                 <TableCell align="left">{row.name}</TableCell>
                 <TableCell align="left">{row.User.displayName}</TableCell>
                 <TableCell align="left">
-                  <IconButton color="success">
-                    <PublicIcon />
-                  </IconButton>
+                  {row.type === "PUBLIC" && (
+                    <IconButton color="success">
+                      <PublicIcon />
+                    </IconButton>
+                  )}
+                  {row.type !== "PUBLIC" && (
+                    <IconButton color="error">
+                      <LockIcon />
+                    </IconButton>
+                  )}
                 </TableCell>
                 <TableCell align="right">
-                  {console.log(user.id, row.hostId)}
                   {user?.id === row.hostId && (
                     <Stack
                       spacing={2}

@@ -4,7 +4,9 @@ export const roomServices = {
     return clientService.get("/room");
   },
   create(data) {
-    return clientService.post("/room", data);
+    return clientService.post("/room", data, {
+      headers: { token: localStorage.getItem("token") },
+    });
   },
   delete(id) {
     return clientService.delete(`/room/delete/${id}`, {
