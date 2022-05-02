@@ -27,14 +27,18 @@ function MessageBox({ content, idOwn }) {
             key={i}
             className={idOwn === message.idOwn ? "yourMess" : "otherMess"}
           >
-            <div className="empty"></div>
-            <div className="directionMess" style={{ position: "relative" }}>
+            <div className="titleName">
               <b className="author">{message.displayName}</b>
-              {message.message.split(/\n/).map((line, i) => (
-                <div key={i} className="contentMess">
-                  {line}
-                </div>
-              ))}
+            </div>
+            <div className="content">
+              <div className="empty"></div>
+              <div className="directionMess" style={{ position: "relative" }}>
+                {message.message.split(/\n/).map((line, i) => (
+                  <div key={i} className="contentMess">
+                    {line}
+                  </div>
+                ))}
+              </div>
             </div>
           </li>
         );

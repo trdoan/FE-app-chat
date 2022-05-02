@@ -3,14 +3,14 @@
   text-align: center;
   font-style: italic;
 }
-.yourMess {
+.yourMess .content {
   display: flex;
   flex-direction: row-reverse;
 }
-.yourMess .directionMess, .otherMess .directionMess {
+.yourMess .content .directionMess, .otherMess .content .directionMess {
     max-width: 60%;
 }
-.yourMess .directionMess .contentMess {
+.yourMess .content .directionMess .contentMess {
   border: 1px solid transparent;
   background-color: rgb(26, 80, 219);
   color: white;
@@ -21,15 +21,15 @@
   text-align: justify;
   
 }
-.yourMess .directionMess .author {
+.yourMess .titleName .author {
   display: block;
   text-align: right;
 }
-.otherMess {
+.otherMess .content {
   display: flex;
   flex-direction: row;
 }
-.otherMess .directionMess .contentMess {
+.otherMess .content .directionMess .contentMess {
   border: 1px solid transparent;
   background-color: rgb(178, 169, 169);
   color: black;
