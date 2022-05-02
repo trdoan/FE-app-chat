@@ -100,7 +100,7 @@ function ChatPage() {
   });
   const [idOwn, setIdOwn] = useState();
   //
-  const username = JSON.parse(localStorage.getItem("user")).userName;
+  const username = JSON.parse(localStorage.getItem("user")).displayName;
   console.log({ username });
   const [users, setUsers] = useState([]);
   const { room } = useParams();

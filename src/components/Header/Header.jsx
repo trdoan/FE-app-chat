@@ -10,12 +10,12 @@ import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-export default function Header() {
+export default function Header({ position }) {
   let user = JSON.parse(localStorage.getItem("user"));
   const isLogin = useSelector((state) => state.auth.isLogin);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar position={position ? position : "fixed"}>
         <Toolbar>
           <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <VideoCameraBackIcon />

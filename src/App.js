@@ -6,7 +6,7 @@ import LoginPage from "./pages/Auth/LoginPage";
 import ChatPage from "./pages/Chat/ChatPage";
 import HomePage from "./pages/Home/HomePage";
 import LobbyPage from "./pages/Lobby/LobbyPage";
-
+import ProfilePage from "./pages/Profile/ProflePage";
 function App() {
   return (
     <div className="App">
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/lobby" element={<LobbyPage />} />
-
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/room/:room" element={<ChatPage />} />
       </Routes>
 
