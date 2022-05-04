@@ -3,6 +3,12 @@ export const roomServices = {
   findAll() {
     return clientService.get("/room");
   },
+  findOne(id) {
+    return clientService.get(`/room/${id}`);
+  },
+  checkPassword(id, password) {
+    return clientService.post(`/room/${id}`, password);
+  },
   create(data) {
     return clientService.post("/room", data, {
       headers: { token: localStorage.getItem("token") },

@@ -1,25 +1,25 @@
+import LogoutIcon from "@mui/icons-material/Logout";
+import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
+import { Popover } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
-import { Link } from "react-router-dom";
-import { Avatar, Popover } from "@mui/material";
-import { useEffect, useState } from "react";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import LogoutIcon from "@mui/icons-material/Logout";
-import {
-  checkTokenAction,
-  logoutAction,
-} from "../../store/actions/auth.action";
-import { WindowSharp } from "@mui/icons-material";
-export default function Header({ position }) {
-  let user = JSON.parse(localStorage.getItem("user"));
+import { Link, useNavigate } from "react-router-dom";
+import { checkTokenAction } from "../../store/actions/auth.action";
+
+function Header({ position, user }) {
+  // const [user, setUser] = useState("");
+
+  // const userLocal = JSON.parse(localStorage.getItem("user"));
+  // console.log({ user }, { userLocal });
   const isLogin = useSelector((state) => state.auth.isLogin);
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,12 +28,14 @@ export default function Header({ position }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.clear();
-    dispatch(checkTokenAction());
+    await dispatch(checkTokenAction());
   };
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position={position ? position : "fixed"}>
@@ -44,6 +46,9 @@ export default function Header({ position }) {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={() => {
+              navigate("/");
+            }}
           >
             <VideoCameraBackIcon />
           </IconButton>
@@ -67,7 +72,7 @@ export default function Header({ position }) {
             <>
               <Typography
                 onClick={handleClick}
-              >{`Hi ${user.displayName}`}</Typography>
+              >{`Hi ${user?.displayName}`}</Typography>
               <Popover
                 id={id}
                 open={open}
@@ -93,3 +98,5 @@ export default function Header({ position }) {
     </Box>
   );
 }
+
+export default React.memo(Header);

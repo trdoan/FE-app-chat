@@ -118,11 +118,7 @@ function RoomForm(createNewRoom) {
     socket.emit("new-room-created", data);
     setDisable(false);
   };
-  useEffect(() => {
-    return () => {
-      dispatch({ type: ERROR_RESPONSE, payload: null });
-    };
-  }, []);
+  useEffect(() => {}, []);
   const form = useForm({
     defaultValues: {
       displayName: user?.displayName,
@@ -175,8 +171,9 @@ function RoomForm(createNewRoom) {
 
             <FormGroup>
               <FormControlLabel
-                control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
+                control={<MaterialUISwitch sx={{ m: 1 }} />}
                 label="Riêng tư"
+                checked={checked}
                 onChange={handleChange}
               />
             </FormGroup>

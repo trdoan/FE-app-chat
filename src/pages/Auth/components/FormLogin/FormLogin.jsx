@@ -14,7 +14,10 @@ import FormSignUp from "../FormSignUp/FormSignUp";
 const schema = yup
   .object()
   .shape({
-    email: yup.string().required("(*) Vui lòng nhập email").email("Email không đúng định dạng"),
+    email: yup
+      .string()
+      .required("(*) Vui lòng nhập email")
+      .email("Email không đúng định dạng"),
     password: yup.string().required("(*) Vui lòng nhập mật khẩu"),
   })
   .required();
@@ -45,9 +48,19 @@ function FormLogin({ handleLogin, disable }) {
 
   return (
     <>
-      <Box component="form" noValidate onSubmit={handleSubmit(handleLogin)} sx={{ mt: 1 }}>
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit(handleLogin)}
+        sx={{ mt: 1 }}
+      >
         <InputField form={form} name="email" label="Email" />
-        <InputField form={form} name="password" label="Mật khẩu" type="password" />
+        <InputField
+          form={form}
+          name="password"
+          label="Mật khẩu"
+          type="password"
+        />
         <FormControlLabel
           control={
             <Checkbox
@@ -62,7 +75,7 @@ function FormLogin({ handleLogin, disable }) {
           }
           label="Duy trì đăng nhập"
         />
-        {error && <Alert severity="error">{error.message}</Alert>}
+
         <LoadingButton
           type="submit"
           fullWidth

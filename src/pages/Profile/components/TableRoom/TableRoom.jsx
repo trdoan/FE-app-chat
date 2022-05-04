@@ -18,6 +18,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import RoomForm from "../RoomForm/RoomForm";
 import LockIcon from "@mui/icons-material/Lock";
 export default function TableRoom({ roomList, socket }) {
+  console.log(roomList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -106,6 +107,7 @@ export default function TableRoom({ roomList, socket }) {
                       spacing={2}
                       direction="row"
                       justifyContent="center"
+                      flexWrap={true}
                       divider={<Divider orientation="vertical" flexItem />}
                     >
                       <Button

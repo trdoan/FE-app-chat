@@ -8,7 +8,11 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginAction, signUpAction } from "../../store/actions/auth.action";
+import {
+  checkTokenAction,
+  loginAction,
+  signUpAction,
+} from "../../store/actions/auth.action";
 import FormLogin from "./components/FormLogin/FormLogin";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -36,9 +40,8 @@ export default function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogin = async (data) => {
-    dispatch(fetchDataOnAction());
     await dispatch(loginAction(data));
-    dispatch(fetchDataOffAction());
+    await dispatch(checkTokenAction(localStorage.getItem("token")));
   };
   // modal
   const [open, setOpen] = useState(false);
@@ -117,7 +120,9 @@ export default function LoginPage() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          {content === "SIGN_UP_FORM" && <FormSignUp />}
+          {content === "SIGN_UP_FORM" && (
+            <FormSignUp handleClose={handleClose} />
+          )}
           <IconButton
             sx={{ position: "absolute", top: 0, right: 0 }}
             onClick={handleClose}

@@ -1,20 +1,14 @@
 import DuoIcon from "@mui/icons-material/Duo";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { Button, Tabs, Typography } from "@mui/material";
+import { Tabs, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import Tab from "@mui/material/Tab";
-import { useEffect, useState } from "react";
-
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import { checkTokenAction } from "../../store/actions/auth.action";
-import { createRoom, findAllRoom } from "../../store/actions/room.action";
-import FormSignUp from "../Auth/components/FormSignUp/FormSignUp";
+import { findAllRoom } from "../../store/actions/room.action";
 import UserUpdate from "./components/FormUserUpdate/UserUpdate";
 import TableRoom from "./components/TableRoom/TableRoom";
 
@@ -56,7 +50,7 @@ function TabPanel(props) {
     </div>
   );
 }
-export default function ProfilePage() {
+function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLogin = useSelector((state) => state.auth.isLogin);
@@ -65,14 +59,16 @@ export default function ProfilePage() {
   const { roomList } = useSelector((state) => state.room);
   const [value, setValue] = useState(0);
   const token = localStorage.getItem("token");
+  // const user = JSON.parse(localStorage.getItem("user"));
+  const user = useSelector((state) => state.user.info);
 
-  useEffect(() => {
-    dispatch(checkTokenAction(token));
-    dispatch(findAllRoom());
+  useEffect(async () => {
+    await dispatch(checkTokenAction(token));
+    await dispatch(findAllRoom());
     socket.on("send-rooms-to-client", () => {
       dispatch(findAllRoom());
     });
-  }, [value, dispatch, socket, token]);
+  }, [token]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -95,7 +91,7 @@ export default function ProfilePage() {
   };
   return (
     <>
-      <Header position="relative" />
+      <Header user={user} position="relative" />
       <Box
         sx={{
           bgcolor: "background.paper",
@@ -116,7 +112,7 @@ export default function ProfilePage() {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <UserUpdate />
+        <UserUpdate user={user} />
       </TabPanel>
       <TabPanel value={value} index={1} sx={{ widh: "100%" }}>
         <TableRoom roomList={roomList} socket={socket} />
@@ -124,3 +120,5 @@ export default function ProfilePage() {
     </>
   );
 }
+
+export default React.memo(ProfilePage);

@@ -14,10 +14,8 @@ const initialState = {
 export const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LOGIN:
-      console.log({ payload });
+      console.log("bắt đầu set token");
       try {
-        const user = jwt_decode(payload.token);
-        localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("token", payload.token);
         return { isLogin: true, token: payload.token };
       } catch (error) {
@@ -28,7 +26,7 @@ export const authReducer = (state = initialState, { type, payload }) => {
     case "OPEN_MODAL":
       return {};
     case "SUCCESS":
-      return { success: payload };
+      return { ...state, success: payload, error: null };
     case "LOGOUT":
       return { ...state, isLogin: payload };
     case SET_LOGIN_TRUE:

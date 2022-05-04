@@ -22,13 +22,14 @@ const schema = yup
   })
   .required();
 
-function FormSignUp({ update }) {
+function FormSignUp({ update, handleClose }) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [disable, setDisable] = useState(false);
   const handleSignUp = async (data) => {
     setDisable(true);
     await dispatch(signUpAction(data));
+    handleClose();
     setDisable(false);
   };
 
@@ -71,12 +72,7 @@ function FormSignUp({ update }) {
         label="Mật khẩu"
         type="password"
       />
-      {auth.error?.status && (
-        <Alert severity="error">{auth.error?.message}</Alert>
-      )}
-      {auth.success?.status === "SUCCESS" && (
-        <Alert severity="success">{auth.success?.message}</Alert>
-      )}
+
       <LoadingButton
         type="submit"
         fullWidth

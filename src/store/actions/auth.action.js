@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { authService } from "../../services/auth/auth.service";
 import {
   ERROR_RESPONSE,
@@ -7,12 +8,15 @@ import {
   SET_LOGIN_TRUE,
   SIGN_UP,
 } from "../constants/auth.constant";
+import { fetchDataOffAction, fetchDataOnAction } from "./common.action";
 
 export const loginAction = (userInfo) => {
   return async (dispatch) => {
+    dispatch(fetchDataOnAction());
     try {
       const data = await authService.signIn(userInfo);
-      dispatch({ type: LOGIN, payload: data });
+      await dispatch({ type: LOGIN, payload: data });
+      dispatch(fetchDataOffAction());
       toast.success("Đăng nhập thành công", {
         position: "bottom-left",
         autoClose: 5000,
@@ -23,17 +27,29 @@ export const loginAction = (userInfo) => {
         progress: undefined,
       });
     } catch (error) {
-      dispatch({ type: ERROR_RESPONSE, payload: error });
+      dispatch(fetchDataOffAction());
+      Swal.fire({
+        title: "LỖI XÁC THỰC",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
     }
   };
 };
 export const checkTokenAction = (token) => {
   return async (dispatch) => {
     try {
-      await authService.checkToken(token);
-      dispatch({ type: SET_LOGIN_TRUE });
+      await dispatch(fetchDataOnAction());
+      const user = await authService.checkToken(token);
+      console.log("user action", user.contentToken);
+      localStorage.setItem("user", JSON.stringify(user.contentToken));
+
+      await dispatch({ type: SET_LOGIN_TRUE, payload: user });
+      dispatch(fetchDataOffAction());
     } catch (error) {
       dispatch({ type: SET_LOGIN_FALSE });
+      await dispatch(fetchDataOffAction());
     }
   };
 };
@@ -41,9 +57,14 @@ export const signUpAction = (userInfo) => {
   return async (dispatch) => {
     try {
       const data = await authService.signUp(userInfo);
-      dispatch({ type: "SUCCESS", payload: data });
+      Swal.fire("THÔNG BÁO", "ĐĂNG KÝ TÀI KHOẢN THÀNH CÔNG", "success");
     } catch (error) {
-      dispatch({ type: ERROR_RESPONSE, payload: error });
+      Swal.fire({
+        title: "LỖI XÁC THỰC",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
     }
   };
 };

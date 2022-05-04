@@ -16,15 +16,20 @@ import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import "./ChatPage.css";
 import ChatForm from "./components/ChatForm/ChatForm";
 import MessageBox from "./components/MessageBox/MessageBox";
 import UserList from "./components/UserList";
-
+import {
+  checkPasswordRoom,
+  findOneRoomAction,
+} from "./../../store/actions/room.action";
+import FormByPass from "./components/FormByPass/FormByPass";
 const drawerWidth = 300;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -99,21 +104,26 @@ function ChatPage() {
     copied: false,
   });
   const [idOwn, setIdOwn] = useState();
+  const dispatch = useDispatch();
   //
   const displayName = JSON.parse(localStorage.getItem("user")).displayName;
   console.log({ displayName });
   const [users, setUsers] = useState([]);
-  const { room } = useParams();
+  const { id } = useParams();
 
   const socket = useSelector((state) => state.socket.socket);
+  const room = useSelector((state) => state.room.currentRoom.info);
+  const isValid = useSelector((state) => state.room.currentRoom.isValid);
   useEffect(() => {
-    console.log({ displayName, room });
+    dispatch(findOneRoomAction(id));
+
+    setClipboard((preState) => ({ ...preState, value: room }));
     socket.on("getID", (id) => {
       setIdOwn(id);
     });
-    setClipboard((preState) => ({ ...preState, value: room }));
     socket.emit("join-room", { displayName, room });
     socket.on("helloFirstTime", (data) => {
+      console.log({ data });
       setContent((preState) => [...preState, data]);
     });
     socket.on("notify-new-user-connect", (data) => {
@@ -131,6 +141,7 @@ function ChatPage() {
       setContent((preState) => [...preState, message]);
       setUsers(data);
     });
+
     return () => {
       socket.close();
     };
@@ -156,8 +167,12 @@ function ChatPage() {
     data.idOwn = idOwn;
     socket.emit("send-message", data);
   };
-
-  return (
+  const confirmPasswordRoom = (data) => {
+    dispatch(checkPasswordRoom(id, data));
+  };
+  return isValid === false ? (
+    <FormByPass confirmPasswordRoom={confirmPasswordRoom} />
+  ) : (
     <>
       <Box
         sx={{
@@ -168,7 +183,7 @@ function ChatPage() {
         }}
       >
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
+        <AppBar open={open}>
           <Toolbar>
             <IconButton
               color="inherit"
@@ -181,10 +196,10 @@ function ChatPage() {
             </IconButton>
 
             <Typography variant="h6" noWrap component="div">
-              {"ID: " + room}
+              {"Tên phòng: " + room?.name}
             </Typography>
             <CopyToClipboard
-              text={room}
+              text={room?.name}
               onCopy={() =>
                 setClipboard((preState) => ({ ...preState, copied: true }))
               }
@@ -237,7 +252,7 @@ function ChatPage() {
           <Divider />
 
           <TabPanel value={value} index={0}>
-            <UserList userList={users} />
+            <UserList userList={users} idOwn={idOwn} />
           </TabPanel>
         </Drawer>
         <Main open={open}>

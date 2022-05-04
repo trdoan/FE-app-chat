@@ -15,13 +15,14 @@ function HomePage() {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     dispatch(checkTokenAction(token));
-  }, []);
+  }, [dispatch, token]);
 
   return (
     <div>
-      <Header isLogin={isLogin} />
+      <Header isLogin={isLogin} user={user} />
       <Banner isLogin={isLogin} />
       <Pricing />
 

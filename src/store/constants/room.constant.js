@@ -1,2 +1,4 @@
 export const FIND_ALL_ROOM = "FIND_ALL_ROOM";
 // export const CREATE_ROOM = "CREATE_ROOM";
+export const FIND_DETAIL_ROOM = "FIND_DETAIL_ROOM";
+export const CHECK_PRIVATE_ROOM = "CHECK_PRIVATE_ROOM";

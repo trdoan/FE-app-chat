@@ -6,7 +6,9 @@
 ::-webkit-scrollbar {
   width: 3px;
 }
-
+.swal2-popup {
+  z-index: 999999;
+}
 /* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;

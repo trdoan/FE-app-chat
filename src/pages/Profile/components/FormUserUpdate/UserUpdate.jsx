@@ -8,7 +8,10 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import InputField from "../../../../components/InputField";
-import { signUpAction } from "../../../../store/actions/auth.action";
+import {
+  checkTokenAction,
+  signUpAction,
+} from "../../../../store/actions/auth.action";
 import { updateUserAction } from "../../../../store/actions/users.action";
 import { ERROR_RESPONSE } from "../../../../store/constants/auth.constant";
 
@@ -25,24 +28,20 @@ const schema = yup
   })
   .required();
 
-function UserUpdate() {
+function UserUpdate({ user }) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const user = JSON.parse(localStorage.getItem("user"));
+  // const user = JSON.parse(localStorage.getItem("user"));
 
   const [disable, setDisable] = useState(false);
   const handleUpdateUser = async (data) => {
     setDisable(true);
-    // await dispatch(signUpAction(data));
+
     await dispatch(updateUserAction(data));
 
     setDisable(false);
   };
-  useEffect(() => {
-    return () => {
-      dispatch({ type: ERROR_RESPONSE, payload: null });
-    };
-  }, []);
+
   const form = useForm({
     defaultValues: {
       displayName: user?.displayName,
@@ -95,12 +94,7 @@ function UserUpdate() {
         label="Xác nhận mật khẩu mới"
         type="password"
       />
-      {auth.error?.status && (
-        <Alert severity="error">{auth.error?.message}</Alert>
-      )}
-      {auth.success?.status === "SUCCESS" && (
-        <Alert severity="success">{auth.success?.message}</Alert>
-      )}
+
       <LoadingButton
         type="submit"
         fullWidth
