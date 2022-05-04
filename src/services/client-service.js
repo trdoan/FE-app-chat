@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const clientService = axios.create({
-  baseURL: "http://localhost:5001",
+  baseURL: "https://api-meet-cdtt.herokuapp.com",
 });
 clientService.interceptors.request.use(
   function (config) {
