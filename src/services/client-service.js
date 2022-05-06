@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const clientService = axios.create({
-  baseURL: "https://api-meet-cdtt.herokuapp.com",
+  baseURL: "http://localhost:5001",
 });
 clientService.interceptors.request.use(
   function (config) {
@@ -18,7 +18,7 @@ clientService.interceptors.response.use(
     return response.data;
   },
   function (error) {
-    console.log("error", error.response.data);
+    //console.log("error", error.response.data);
     return Promise.reject(error.response.data);
   }
 );

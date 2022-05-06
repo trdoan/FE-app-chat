@@ -15,7 +15,7 @@ function MainForm({ user, login }) {
     const value = event.target.value;
     const name = event.target.name;
     setLobby({ ...lobby, [name]: value });
-    console.log("lobby", lobby);
+    //console.log("lobby", lobby);
   };
 
   const handleNewRoom = (event) => {

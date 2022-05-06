@@ -18,12 +18,12 @@ import PublicIcon from "@mui/icons-material/Public";
 import RoomForm from "../RoomForm/RoomForm";
 import LockIcon from "@mui/icons-material/Lock";
 export default function TableRoom({ roomList, socket }) {
-  console.log(roomList);
+  //console.log(roomList);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const createNewRoom = async (data) => {
-    console.log(data);
+    //console.log(data);
     await dispatch(createRoom(data));
     socket.emit("new-room-created", data);
   };
@@ -37,6 +37,7 @@ export default function TableRoom({ roomList, socket }) {
   };
   return (
     <>
+      <RoomForm createNewRoom={createNewRoom} />
       <TableContainer component={Paper} sx={{ border: "5px" }}>
         <Table
           sx={{ minWidth: 650, width: "100%", margin: "auto" }}
@@ -129,7 +130,7 @@ export default function TableRoom({ roomList, socket }) {
                 <TableCell
                   component="th"
                   scope="row"
-                  colSpan={4}
+                  colSpan={5}
                   align="center"
                 >
                   Chưa có phòng nào được tạo
@@ -139,7 +140,6 @@ export default function TableRoom({ roomList, socket }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <RoomForm createNewRoom={createNewRoom} />
     </>
   );
 }

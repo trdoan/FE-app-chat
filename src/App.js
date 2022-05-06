@@ -1,13 +1,10 @@
-import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
-import Header from "./components/Header/Header";
-
 import LoginPage from "./pages/Auth/LoginPage";
 import ChatPage from "./pages/Chat/ChatPage";
 import HomePage from "./pages/Home/HomePage";
-import LobbyPage from "./pages/Lobby/LobbyPage";
+import PageNotFound from "./pages/page-not-found/pageNotFound";
 import ProfilePage from "./pages/Profile/ProflePage";
 
 function App() {
@@ -20,7 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/lobby" element={<LobbyPage />} />
+
         <Route
           path="/profile"
           element={[
@@ -29,6 +26,7 @@ function App() {
           ]}
         />
         <Route path="/room/:id" element={<ChatPage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
 
       <ToastContainer

@@ -6,7 +6,7 @@ function MessageBox({ content, idOwn }) {
       .getElementById("myBox")
       .scrollTo(0, document.getElementById("myBox").scrollHeight);
   }, [content]);
-  console.log(content);
+  //console.log(content);
   return (
     <ul
       id="myBox"

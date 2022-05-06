@@ -22,7 +22,7 @@ function ChatForm({ handleSendMessage, displayName }) {
   };
 
   const handleForm = (e) => {
-    console.log(e);
+    //console.log(e);
     handleSendMessage(e, message);
     setMessage((t) => ({ ...t, message: "" }));
   };

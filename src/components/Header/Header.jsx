@@ -7,17 +7,15 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { checkTokenAction } from "../../store/actions/auth.action";
 
-function Header({ position, user }) {
-  // const [user, setUser] = useState("");
-
-  // const userLocal = JSON.parse(localStorage.getItem("user"));
-  // console.log({ user }, { userLocal });
+function Header({ position }) {
   const isLogin = useSelector((state) => state.auth.isLogin);
+  const user = useSelector((state) => state.user?.info);
+  //console.log("user header", user);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,7 +28,7 @@ function Header({ position, user }) {
   };
   const handleLogout = async () => {
     localStorage.clear();
-    await dispatch(checkTokenAction());
+    await dispatch(checkTokenAction("/home"));
   };
 
   const open = Boolean(anchorEl);
