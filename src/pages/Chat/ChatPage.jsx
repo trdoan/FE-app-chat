@@ -134,13 +134,13 @@ function ChatPage() {
       setIdOwn(id);
     });
     socket.emit("join-room", { displayName, room: id });
-    socket.on("helloFirstTime", (data) => {
-      //console.log({ data });
-      setContent((preState) => [...preState, data]);
-    });
-    socket.on("notify-new-user-connect", (data) => {
-      setContent((preState) => [...preState, data]);
-    });
+    // socket.on("helloFirstTime", (data) => {
+    //   //console.log({ data });
+    //   setContent((preState) => [...preState, data]);
+    // });
+    // socket.on("notify-new-user-connect", (data) => {
+    //   setContent((preState) => [...preState, data]);
+    // });
     socket.on("get-user-list-by-room", (data) => {
       setUsers(data);
     });
