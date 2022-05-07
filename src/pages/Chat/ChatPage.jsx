@@ -123,6 +123,7 @@ function ChatPage() {
   //     origin: "*",
   //   })
   // );
+  console.log({ room });
   const navigate = useNavigate();
   useEffect(() => {
     console.log("use Effect");
@@ -132,7 +133,7 @@ function ChatPage() {
     socket.on("getID", (id) => {
       setIdOwn(id);
     });
-    socket.emit("join-room", { displayName, room });
+    socket.emit("join-room", { displayName, room: id });
     socket.on("helloFirstTime", (data) => {
       //console.log({ data });
       setContent((preState) => [...preState, data]);
@@ -233,7 +234,7 @@ function ChatPage() {
                 <ContentCopyIcon />
               </IconButton>
             </CopyToClipboard>
-            {/* <Button
+            <Button
               sx={{
                 width: "auto",
                 bgcolor: "white",
@@ -243,11 +244,11 @@ function ChatPage() {
                 },
               }}
               onClick={() => {
-                navigate("/", { replace: true });
+                window.location.href = "/profile";
               }}
             >
               RỜI PHÒNG
-            </Button> */}
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer

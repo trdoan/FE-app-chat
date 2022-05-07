@@ -176,7 +176,7 @@ function RoomForm(createNewRoom) {
             <FormGroup>
               <FormControlLabel
                 control={<MaterialUISwitch sx={{ m: 1 }} />}
-                label="Riêng tư"
+                label={checked ? "Riêng tư" : "Công khai"}
                 checked={checked}
                 onChange={handleChange}
               />
