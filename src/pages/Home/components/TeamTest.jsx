@@ -27,8 +27,8 @@ export default function TeamTest(props) {
     "02_name": "Dương Doãn",
     "02_job": "Developer",
     "03_image": "/loc.png",
-    "03_name": "Phú Lộc",
-    "03_job": "CEO",
+    "03_name": "Bảo Lưu",
+    "03_job": "Designer",
     ...props.content,
   };
 
