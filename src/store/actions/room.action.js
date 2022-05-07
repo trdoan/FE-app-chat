@@ -25,6 +25,7 @@ export const findOneRoomAction = (id, navigate) => {
   return async (dispatch) => {
     try {
       dispatch(fetchDataOnAction());
+      await dispatch(checkTokenAction("/room", navigate));
       const roomInfo = await roomServices.findOne(id);
       dispatch({
         type: FIND_DETAIL_ROOM,

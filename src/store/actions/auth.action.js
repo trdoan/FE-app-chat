@@ -52,11 +52,11 @@ export const checkTokenAction = (url, navigate) => {
       await dispatch({ type: SET_LOGIN_TRUE, payload: user });
       // dispatch(fetchDataOffAction());
     } catch (error) {
+      dispatch({ type: SET_LOGIN_FALSE });
       if (url !== "/home") {
         Swal.fire("LỖI XÁC THỰC", "VUI LÒNG ĐĂNG NHẬP LẠI", "error");
         navigate("/");
       }
-      dispatch({ type: SET_LOGIN_FALSE });
 
       // await dispatch(fetchDataOffAction());
     }

@@ -70,7 +70,7 @@ function ProfilePage() {
     socket.on("send-rooms-to-client", () => {
       dispatch(findAllRoom());
     });
-  }, [dispatch]);
+  }, [isLogin, dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
