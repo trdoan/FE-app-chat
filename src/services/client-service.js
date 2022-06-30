@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const clientService = axios.create({
-  baseURL: "https://api-meet-cdtt.herokuapp.com",
+  baseURL: "https://app-chat-realtime-vn.herokuapp.com",
   // baseURL: "http://localhost:5001",
 });
 clientService.interceptors.request.use(
