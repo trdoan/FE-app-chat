@@ -14,7 +14,7 @@ const initialState = {
 export const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LOGIN:
-      console.log("bắt đầu set token");
+      //console.log("bắt đầu set token");
       try {
         localStorage.setItem("token", payload.token);
         return { isLogin: true, token: payload.token };

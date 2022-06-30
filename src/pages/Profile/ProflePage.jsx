@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import Loading from "../../components/Loading/Loading";
 import { checkTokenAction } from "../../store/actions/auth.action";
 import { findAllRoom } from "../../store/actions/room.action";
 import UserUpdate from "./components/FormUserUpdate/UserUpdate";
@@ -53,22 +54,23 @@ function TabPanel(props) {
 function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogin = useSelector((state) => state.auth.isLogin);
-  isLogin === false && navigate("/");
+
   const { socket } = useSelector((state) => state.socket);
   const { roomList } = useSelector((state) => state.room);
   const [value, setValue] = useState(0);
-  const token = localStorage.getItem("token");
+
   // const user = JSON.parse(localStorage.getItem("user"));
   const user = useSelector((state) => state.user.info);
-
-  useEffect(async () => {
-    await dispatch(checkTokenAction(token));
-    await dispatch(findAllRoom());
+  const isFetch = useSelector((state) => state.common.isFetch);
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  //console.log({ isLogin });
+  useEffect(() => {
+    // isLogin === false && navigate("/");
+    dispatch(findAllRoom("/profile", navigate));
     socket.on("send-rooms-to-client", () => {
       dispatch(findAllRoom());
     });
-  }, [token]);
+  }, [isLogin, dispatch]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -89,7 +91,19 @@ function ProfilePage() {
       );
     });
   };
-  return (
+  return isFetch ? (
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "20%",
+      }}
+    >
+      <Loading />
+    </Box>
+  ) : (
     <>
       <Header user={user} position="relative" />
       <Box

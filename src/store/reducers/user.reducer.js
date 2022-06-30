@@ -8,7 +8,7 @@ export const userReducer = (state = initialState, { type, payload }) => {
     case SET_USER:
       return { ...state, info: { ...state.info, displayName: payload } };
     case SAVE_USER:
-      return { ...state, google: payload };
+      return { ...state, info: payload };
     default:
       return state;
   }

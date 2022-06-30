@@ -1,5 +1,6 @@
+import CloseIcon from "@mui/icons-material/Close";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Alert, Button, IconButton, Modal } from "@mui/material";
+import { Button, IconButton, Modal } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,21 +9,12 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  checkTokenAction,
-  loginAction,
-  signUpAction,
-} from "../../store/actions/auth.action";
-import FormLogin from "./components/FormLogin/FormLogin";
-import CloseIcon from "@mui/icons-material/Close";
-
-import "./LoginPage.scss";
-import FormSignUp from "./components/FormSignUp/FormSignUp";
-import {
-  fetchDataOffAction,
-  fetchDataOnAction,
-} from "../../store/actions/common.action";
 import { useNavigate } from "react-router-dom";
+import { loginAction } from "../../store/actions/auth.action";
+import FormLogin from "./components/FormLogin/FormLogin";
+import FormSignUp from "./components/FormSignUp/FormSignUp";
+import "./LoginPage.scss";
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -35,13 +27,12 @@ const style = {
   p: 4,
 };
 export default function LoginPage() {
-  console.log("RENDER LOGIN PAGE");
+  //console.log("RENDER LOGIN PAGE");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogin = async (data) => {
-    await dispatch(loginAction(data));
-    await dispatch(checkTokenAction(localStorage.getItem("token")));
+  const handleLogin = (data) => {
+    dispatch(loginAction(data));
   };
   // modal
   const [open, setOpen] = useState(false);
@@ -55,7 +46,7 @@ export default function LoginPage() {
   };
 
   useEffect(() => {
-    login && navigate("/profile");
+    login === true && navigate("/profile");
   }, [login]);
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>

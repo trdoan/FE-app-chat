@@ -8,6 +8,7 @@ import {
   SET_LOGIN_TRUE,
   SIGN_UP,
 } from "../constants/auth.constant";
+import { SAVE_USER } from "../constants/users.constant";
 import { fetchDataOffAction, fetchDataOnAction } from "./common.action";
 
 export const loginAction = (userInfo) => {
@@ -16,6 +17,7 @@ export const loginAction = (userInfo) => {
     try {
       const data = await authService.signIn(userInfo);
       await dispatch({ type: LOGIN, payload: data });
+      await dispatch(checkTokenAction());
       dispatch(fetchDataOffAction());
       toast.success("Đăng nhập thành công", {
         position: "bottom-left",
@@ -37,19 +39,26 @@ export const loginAction = (userInfo) => {
     }
   };
 };
-export const checkTokenAction = (token) => {
+export const checkTokenAction = (url, navigate) => {
   return async (dispatch) => {
     try {
-      await dispatch(fetchDataOnAction());
+      const token = localStorage.getItem("token");
+      // await dispatch(fetchDataOnAction());
       const user = await authService.checkToken(token);
-      console.log("user action", user.contentToken);
-      localStorage.setItem("user", JSON.stringify(user.contentToken));
 
+      //console.log("user action", user.contentToken);
+      localStorage.setItem("user", JSON.stringify(user.contentToken));
+      dispatch({ type: SAVE_USER, payload: user.contentToken });
       await dispatch({ type: SET_LOGIN_TRUE, payload: user });
-      dispatch(fetchDataOffAction());
+      // dispatch(fetchDataOffAction());
     } catch (error) {
       dispatch({ type: SET_LOGIN_FALSE });
-      await dispatch(fetchDataOffAction());
+      if (url !== "/home") {
+        Swal.fire("LỖI XÁC THỰC", "VUI LÒNG ĐĂNG NHẬP LẠI", "error");
+        navigate("/");
+      }
+
+      // await dispatch(fetchDataOffAction());
     }
   };
 };

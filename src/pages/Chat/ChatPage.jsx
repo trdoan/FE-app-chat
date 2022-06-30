@@ -14,13 +14,14 @@ import { styled, useTheme } from "@mui/material/styles";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
+import { io } from "socket.io-client";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./ChatPage.css";
 import ChatForm from "./components/ChatForm/ChatForm";
 import MessageBox from "./components/MessageBox/MessageBox";
@@ -30,6 +31,8 @@ import {
   findOneRoomAction,
 } from "./../../store/actions/room.action";
 import FormByPass from "./components/FormByPass/FormByPass";
+import Loading from "../../components/Loading/Loading";
+import { Button } from "@mui/material";
 const drawerWidth = 300;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -106,42 +109,48 @@ function ChatPage() {
   const [idOwn, setIdOwn] = useState();
   const dispatch = useDispatch();
   //
-  const displayName = JSON.parse(localStorage.getItem("user")).displayName;
-  console.log({ displayName });
+  const displayName = JSON.parse(localStorage.getItem("user"))?.displayName;
+  //console.log({ displayName });
   const [users, setUsers] = useState([]);
   const { id } = useParams();
 
   const socket = useSelector((state) => state.socket.socket);
   const room = useSelector((state) => state.room.currentRoom.info);
   const isValid = useSelector((state) => state.room.currentRoom.isValid);
+  const isFetch = useSelector((state) => state.common.isFetch);
+  // const [socket, setSocket] = useState(
+  //   io("http://localhost:5001", {
+  //     origin: "*",
+  //   })
+  // );
+  console.log({ room });
+  const navigate = useNavigate();
   useEffect(() => {
-    dispatch(findOneRoomAction(id));
+    console.log("use Effect");
 
+    dispatch(findOneRoomAction(id, navigate));
     setClipboard((preState) => ({ ...preState, value: room }));
     socket.on("getID", (id) => {
       setIdOwn(id);
     });
-    socket.emit("join-room", { displayName, room });
-    socket.on("helloFirstTime", (data) => {
-      console.log({ data });
-      setContent((preState) => [...preState, data]);
-    });
-    socket.on("notify-new-user-connect", (data) => {
-      setContent((preState) => [...preState, data]);
-    });
+    socket.emit("join-room", { displayName, room: id });
+    // socket.on("helloFirstTime", (data) => {
+    //   //console.log({ data });
+    //   setContent((preState) => [...preState, data]);
+    // });
+    // socket.on("notify-new-user-connect", (data) => {
+    //   setContent((preState) => [...preState, data]);
+    // });
     socket.on("get-user-list-by-room", (data) => {
       setUsers(data);
     });
     socket.on("send-client-others", (data) => {
-      console.log(data);
-
       setContent((preState) => [...preState, data]);
     });
     socket.on("one-user-out", ({ data, message }) => {
       setContent((preState) => [...preState, message]);
       setUsers(data);
     });
-
     return () => {
       socket.close();
     };
@@ -170,7 +179,24 @@ function ChatPage() {
   const confirmPasswordRoom = (data) => {
     dispatch(checkPasswordRoom(id, data));
   };
-  return isValid === false ? (
+  if (isFetch) {
+    <Loading />;
+  }
+  return isFetch && true ? (
+    <>
+      <Box
+        sx={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "20%",
+        }}
+      >
+        <Loading />
+      </Box>
+    </>
+  ) : isValid === false ? (
     <FormByPass confirmPasswordRoom={confirmPasswordRoom} />
   ) : (
     <>
@@ -208,6 +234,21 @@ function ChatPage() {
                 <ContentCopyIcon />
               </IconButton>
             </CopyToClipboard>
+            <Button
+              sx={{
+                width: "auto",
+                bgcolor: "white",
+                marginLeft: "auto",
+                ":hover": {
+                  bgcolor: "white",
+                },
+              }}
+              onClick={() => {
+                window.location.href = "/profile";
+              }}
+            >
+              RỜI PHÒNG
+            </Button>
           </Toolbar>
         </AppBar>
         <Drawer

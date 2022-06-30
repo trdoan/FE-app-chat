@@ -1,5 +1,6 @@
 import { fabClasses } from "@mui/material";
 import Swal from "sweetalert2";
+
 import { roomServices } from "../../services/room/room.service";
 import {
   CHECK_PRIVATE_ROOM,
@@ -7,9 +8,12 @@ import {
   FIND_ALL_ROOM,
   FIND_DETAIL_ROOM,
 } from "../constants/room.constant";
+import { checkTokenAction } from "./auth.action";
+import { fetchDataOffAction, fetchDataOnAction } from "./common.action";
 
-export const findAllRoom = () => {
+export const findAllRoom = (url, navigate) => {
   return async (dispatch) => {
+    await dispatch(checkTokenAction(url, navigate));
     const roomList = await roomServices.findAll();
     dispatch({
       type: FIND_ALL_ROOM,
@@ -17,15 +21,25 @@ export const findAllRoom = () => {
     });
   };
 };
-export const findOneRoomAction = (id) => {
+export const findOneRoomAction = (id, navigate) => {
   return async (dispatch) => {
-    const roomInfo = await roomServices.findOne(id);
-    dispatch({
-      type: FIND_DETAIL_ROOM,
-      payload: roomInfo,
-    });
-    if (roomInfo.type === "PUBLIC")
-      dispatch({ type: CHECK_PRIVATE_ROOM, payload: true });
+    try {
+      dispatch(fetchDataOnAction());
+      await dispatch(checkTokenAction("/room", navigate));
+      const roomInfo = await roomServices.findOne(id);
+      dispatch({
+        type: FIND_DETAIL_ROOM,
+        payload: roomInfo,
+      });
+      if (roomInfo.type === "PUBLIC")
+        dispatch({ type: CHECK_PRIVATE_ROOM, payload: true });
+      dispatch(fetchDataOffAction());
+    } catch (error) {
+      if (error.message === "Phòng không tồn tại") {
+        navigate("/page-not-found");
+      }
+      dispatch(fetchDataOffAction());
+    }
   };
 };
 export const checkPasswordRoom = (id, password) => {

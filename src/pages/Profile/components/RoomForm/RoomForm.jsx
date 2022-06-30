@@ -28,11 +28,16 @@ import {
   deleteRoom,
   findAllRoom,
 } from "../../../../store/actions/room.action";
+import { YouTube } from "@mui/icons-material";
 
 const schema = yup
   .object()
   .shape({
     name: yup.string().required("(*) Vui lòng nhập tên phòng"),
+    password: yup
+      .string()
+      .optional()
+      .min(6, "(*) Mật khẩu có tối thiểu 6 ký tự"),
   })
   .required();
 const style = {
@@ -106,12 +111,12 @@ function RoomForm(createNewRoom) {
 
   const handleCreateRoom = async (data) => {
     setDisable(true);
-    console.log(data);
+    //console.log(data);
     await dispatch(
       createRoom({
         name: data.name,
         type: checked ? "PRIVATE" : "PUBLIC",
-        password: checked && data.passwordRoom,
+        password: checked && data.password,
       })
     );
     handleClose();
@@ -121,11 +126,8 @@ function RoomForm(createNewRoom) {
   useEffect(() => {}, []);
   const form = useForm({
     defaultValues: {
-      displayName: user?.displayName,
-      email: user?.email,
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      name: "",
+      password: "",
     },
     resolver: yupResolver(schema),
   });
@@ -138,7 +140,9 @@ function RoomForm(createNewRoom) {
   const { handleSubmit } = form;
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
+      <Button variant="contained" onClick={handleOpen}>
+        TẠO PHÒNG
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -172,17 +176,13 @@ function RoomForm(createNewRoom) {
             <FormGroup>
               <FormControlLabel
                 control={<MaterialUISwitch sx={{ m: 1 }} />}
-                label="Riêng tư"
+                label={checked ? "Riêng tư" : "Công khai"}
                 checked={checked}
                 onChange={handleChange}
               />
             </FormGroup>
             {checked && (
-              <InputField
-                form={form}
-                name="passwordRoom"
-                label="Mật khẩu phòng"
-              />
+              <InputField form={form} name="password" label="Mật khẩu phòng" />
             )}
             {auth.error?.status && (
               <Alert severity="error">{auth.error?.message}</Alert>

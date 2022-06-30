@@ -10,17 +10,33 @@ import Pricing from "./components/Pricing/Pricing";
 import TeamTest from "./components/TeamTest";
 import "./HomePage.css";
 import { checkTokenAction } from "../../store/actions/auth.action";
+import Loading from "../../components/Loading/Loading";
+import { Box } from "@mui/system";
 
 function HomePage() {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
-  const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    dispatch(checkTokenAction(token));
-  }, [dispatch, token]);
 
-  return (
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isFetch = useSelector((state) => state.common.isFetch);
+
+  useEffect(() => {
+    dispatch(checkTokenAction("/home"));
+  }, [dispatch]);
+
+  return isFetch ? (
+    <Box
+      sx={{
+        width: "100vw",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "20%",
+      }}
+    >
+      <Loading />
+    </Box>
+  ) : (
     <div>
       <Header isLogin={isLogin} user={user} />
       <Banner isLogin={isLogin} />

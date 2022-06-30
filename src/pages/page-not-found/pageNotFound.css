@@ -1,0 +1,5 @@
+@media screen and (max-width: 900px) {
+  .page-not-found-container {
+    flex-direction: column;
+  }
+}
