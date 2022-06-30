@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 const initialState = {
-  socket: io("https://api-meet-cdtt.herokuapp.com", {
+  socket: io("https://app-chat-realtime-vn.herokuapp.com/", {
     origin: "*",
   }),
 };
